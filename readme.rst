@@ -1,7 +1,12 @@
 ###################
 GMSUSA APP
 ###################
-Basata may sentiment analysis to tapos dko rin alam
+sentinement analysis management 
+
+check codeigniter 3 and php 5.6 or higer version para gamitin
+
+rest server api server version 3.1.1 for android 
+
 
 *******************
 Release Information

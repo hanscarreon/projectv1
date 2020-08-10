@@ -41,7 +41,7 @@
     
   <div class="card card-info">
     <div class="card-header">
-      <h3 class="card-title">Date Schedule</h3>
+      <h3 class="card-title">Analyze Case</h3>
     </div>
     <!-- /.card-header -->
     <!-- form start -->
@@ -69,12 +69,12 @@
           <!-- select ./. -->
            <input type="hidden" class="form-control" value="<?php echo $this->uri->segment("4") ?>" id="user_id" name="user_id" placeholder="Username" value="">
             <input type="hidden" class="form-control" id="senti_id" value="<?php echo $this->uri->segment("5") ?>" name="senti_id" placeholder="Username" value="">
-            <input type="hidden" class="form-control" id="sched_id" value="<?php echo $this->uri->segment("7") ?>" name="sched_id" placeholder="Username" value="">
+            <input type="hidden" class="form-control" id="sched_id" value="<?php echo $this->uri->segment("6") ?>" name="sched_id" placeholder="Username" value="">
       </div>
      
       <!-- /.card-body -->
       <div class="card-footer">
-        <button type="submit" value="set_date" name="set_date" class="btn btn-info">Save</button>
+        <button type="submit" value="create_case" name="create_case" class="btn btn-info">Save</button>
       </div>
       <!-- /.card-footer -->
     </form>
