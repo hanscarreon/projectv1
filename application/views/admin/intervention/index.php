@@ -43,7 +43,7 @@
               <li class="item">
                 <div class="product-info">
                   <i class="far fa-angry text-info"></i>
-                  <a href="<?php echo base_url() ?>admin/intervention/index/all/mood/status" class="product-title text-info"> Total Analysis
+                  <a href="<?php echo base_url() ?>admin/intervention/index/all/all/status" class="product-title text-info"> Total Analysis
                     <!-- <span class="badge badge-danger float-right"><?php echo number_format($total); ?></span> -->
                   </a>
                 </div>
@@ -53,13 +53,137 @@
           </div>
           <!-- /.card-body -->
           <div class="card-footer text-center">
-            <a href="<?php echo base_url() ?>admin/intervention/index/all/mood/status" class="uppercase">View All</a>
+            <a href="<?php echo base_url() ?>admin/intervention/index/all/all/all" class="uppercase">View All</a>
           </div>
           <!-- /.card-footer -->
         </div>
     
   </div>
 
+<!-- <?php echo print_r($plans); ?> -->
+       <div class="col-md-8 col-sm-12 col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Sentiment case</h3>
+
+                <div class="card-tools">
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Date created</th>
+                        <th>Case result</th>
+                        <th>Sentiment</th>
+                        <th>Note</th>
+                        <th>Action</th>
+                        <th>Module</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                     <?php  if ( isset( $plans ) && count($plans) >= 1 ):?>
+                      <?php foreach($plans as $plan): ?>
+                      <tr>
+                        <td><?php echo $plan['inter_id']; ?></td>
+                        <td><?php echo ucfirst($plan['user_fname']); ?> <?php echo ucfirst($plan['user_mname']); ?> <?php echo ucfirst($plan['user_lname']); ?></td>
+                        <td><?php echo date("F j, Y, g:i a",strtotime($plan['inter_created'])) ?></td>
+                        <td>
+                            <?php  
+                            if ($plan["inter_case"] == 'close') 
+                              { 
+                                echo '<span class="tag text-success">'.$plan["inter_case"].'</span>';
+                             }
+                              if ($plan["inter_case"] == 'recommend') 
+                              { 
+                                echo '<span class="tag text-warning">'.$plan["inter_case"].'</span>';
+                             }
+                              if ($plan["inter_case"] == 'plan') 
+                              { 
+                                echo '<span class="tag text-danger">'.$plan["inter_case"].'</span>';
+                             }
+                          ?>
+                          </span>
+                        </td>
+                         <td>
+                          <p><?php echo $plan["senti_text"]; ?></p>
+                        </td>
+                        <td>
+                          <p><?php echo $plan["sched_note"]; ?></p>
+                          
+                        </td>
+                        <?php 
+                          if ($plan["inter_case"] == 'close' || $plan["inter_case"] == 'recommend' ) 
+                             { 
+                                echo '<td></td><td></td>';
+                             }
+                           if ($plan["inter_case"] == 'plan' ) 
+                            { 
+                              echo '<td><a href="'.base_url().'admin/schedule/follow/'. $plan['user_id'].'/'.$plan['senti_id'].'/'.$plan['inter_id'].'"class="btn btn-block btn-outline-info">Set follow-up</a></td>';
+                              if(empty($plan['inter_file'])){
+                                echo '<td>
+                                        <div class="input-group col-sm-10" style="width:320px">
+                                            <div class="custom-file ">
+                                              <input type="file" class="custom-file-input" id="exampleInputFile">
+                                              <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                              <span class="input-group-text" id="">Upload</span>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </td>';
+                              }else{
+                                echo '<td>'.$plan['inter_file'].'</td>';
+                              }
+
+                            }
+                            if ($plan["sched_mod"] == 'follow-up' ) 
+                            { 
+                              echo '<td>Follow-up check up set</td>';
+                              echo '<td></td>';
+                            }
+                        ?>
+
+
+                      <!--   <td><a  href="<?php echo base_url()?>admin/schedule/set/<?php echo $plan['user_id'].'/'.$plan['senti_id'] ?>" class="btn btn-block btn-outline-info">Set Schedule</a></td> -->
+                        <!-- <td><a  class="btn btn-block btn-outline-danger">Delete</a></td> -->
+                      </tr>
+                      <?php endforeach; ?>
+                    
+                   <?php else: ?>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>no data</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                  <?php endif;?>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            <?php echo $this->pagination->create_links(); ?>
+
+          </div>
          
 </div>
 

@@ -41,7 +41,7 @@
     
   <div class="card card-info">
     <div class="card-header">
-      <h3 class="card-title">Analyze Case</h3>
+      <h3 class="card-title">Date Schedule</h3>
     </div>
     <!-- /.card-header -->
     <!-- form start -->
@@ -50,31 +50,37 @@
         <div class="form-group row">
           <label for="user_name" class="col-sm-2 col-form-label">Calendar</label>
           <div class="col-sm-10">
-            <textarea class="form-control" id="inter_note" name="inter_note" rows="5" placeholder="Counseling note"></textarea>
+            <input type="datetime-local" class="form-control" id="sched_date" name="sched_date" placeholder="" value="">
           </div>
-         
         </div>
-         <div class="form-group row">
-            <label for="user_role" class="col-sm-2 col-form-label">Case</label>
-            <div class="col-sm-10">
-              <select class="form-control select2 select2-hidden-accessible" name="inter_case" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true">
-                <option selected="selected" >Select Case</option>
-                <option value="close">Close case</option>
-                <option value="recommend">Recommended to SDO or Pyschologist</option>
-                <option value="plan">Intervention plan</option>
-
-              </select>
-            </div>
+        <div class="form-group row">
+	        <label class="col-sm-2 col-form-label" for="exampleInputFile">File input</label>
+	        <div class="input-group col-sm-10">
+	          <div class="custom-file ">
+	            <input type="file" class="custom-file-input" id="exampleInputFile">
+	            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+	          </div>
+	          <div class="input-group-append">
+	            <span class="input-group-text" id="">Upload</span>
+	          </div>
+	        </div>
+	      </div>
+        <div class="form-group row">
+          <label for="user_name" class="col-sm-2 col-form-label">Calendar</label>
+          <div class="col-sm-10">
+            <input type="file" class="form-control" id="sched_date" name="sched_date" placeholder="" value="">
           </div>
-          <!-- select ./. -->
-           <input type="hidden" class="form-control" value="<?php echo $this->uri->segment("4") ?>" id="user_id" name="user_id" placeholder="Username" value="">
-            <input type="hidden" class="form-control" id="senti_id" value="<?php echo $this->uri->segment("5") ?>" name="senti_id" placeholder="Username" value="">
-            <input type="hidden" class="form-control" id="sched_id" value="<?php echo $this->uri->segment("6") ?>" name="sched_id" placeholder="Username" value="">
-      </div>
+        </div>
+        <!-- hidden fields -->
+        <input type="hidden" class="form-control" value="<?php echo $this->uri->segment("4") ?>" id="user_id" name="user_id" placeholder="user id" >
+        <input type="hidden" class="form-control" id="senti_id" value="<?php echo $this->uri->segment("5") ?>" name="senti_id" placeholder="senti id" >
+        <input type="hidden" class="form-control" id="inter_id" value="<?php echo $this->uri->segment("6") ?>" name="inter_id" placeholder="inter id" >
+        <!-- ./ hidden fields ./ -->
+
      
       <!-- /.card-body -->
       <div class="card-footer">
-        <button type="submit" value="create_case" name="create_case" class="btn btn-info">Save</button>
+        <button type="submit" value="set_date" name="set_date" class="btn btn-info">Save</button>
       </div>
       <!-- /.card-footer -->
     </form>

@@ -14,17 +14,18 @@ class Schedule extends CI_Controller {
 			$this->logout_admin();	
 		}
 	}
-	public function index($slug="all",$status="all",$filter="1"){
+	public function index($slug="all",$status="all",$mod='all',$filter="1"){
 		$header = [];
 		$body = [];
 		$footer = [];
 		
 		$body["user_name"] = $this->uri->segment("4");
 		$body["senti_status"] = $this->uri->segment("5");
+		$body["sched_mod"] = $this->uri->segment("6");
 
 		$config = array();
-		$config["base_url"] = base_url() .'admin/schedule/set/'.$body["user_name"].'/'.$body["senti_status"].'/';
-		$this->_sorting($slug,$status);
+		$config["base_url"] = base_url() .'admin/schedule/set/'.$body["user_name"].'/'.$body["senti_status"].'/'.$body["sched_mod"].'/';
+		$this->_sorting($slug,$status,$mod);
 		$total_row = $this->model_base->count_data('senti_sched');
 		$config["total_rows"] = $total_row;
 		$config['per_page'] = 8;
@@ -67,7 +68,7 @@ class Schedule extends CI_Controller {
 
 
 
-		$this->_sorting($slug,$status);
+		$this->_sorting($slug,$status,$mod);
 		$body['schedules'] = $this->model_base->get_all('senti_sched');
 		$this->db->flush_cache();
 
@@ -78,14 +79,17 @@ class Schedule extends CI_Controller {
 		$this->load->view('admin/schedule/index',$body);
 		$this->load->view("template/site_admin_footer",$footer);
 	}
-	public function _sorting($slug,$status){
+	public function _sorting($slug,$status,$mod){
 		$this->db->join("user", "senti_sched.user_id = user.user_id");
 		$this->db->join("sentiment", "senti_sched.senti_id = sentiment.senti_id");
 		$this->db->where("sentiment.senti_status", 'meeting');
 		if($slug != 'all'){
-			$this->db->like("user.user_fname", $slug, );
+			$this->db->like("user.user_fname", $slug);
 			$this->db->or_like("user.user_lname", $slug);
 			$this->db->or_like("user.user_mname", $slug);
+		}
+		if($mod != 'all'){
+			$this->db->where("sched_mod", $mod);
 		}
 		if($status != 'all'){
 				
@@ -94,7 +98,7 @@ class Schedule extends CI_Controller {
 			$this->db->where("sched_status", 'active');
 		}
 	}
-	public function set($user,$senti){
+	public function set($user,$senti,$type){
 		$header = [];
 		$body = [];
 		$footer = [];
@@ -115,6 +119,7 @@ class Schedule extends CI_Controller {
 				unset($data['set_date']);
 				$table = "senti_sched";
 				$data['sched_created'] = $this->getDatetimeNow();
+        		$data['sched_mod'] = $type;
 				$this->model_base->insert_data($data, $table);
 				$data_update = array('senti_status' => 'meeting' );
 				$col = 'senti_id';
@@ -206,6 +211,27 @@ class Schedule extends CI_Controller {
 
 		$this->load->view("template/site_admin_header",$header);
 		$this->load->view('admin/schedule/edit',$body);
+		$this->load->view("template/site_admin_footer",$footer);
+
+	}
+
+	public function follow($user,$senti,$sched_id){
+		$header = [];
+		$body = [];
+		$footer = [];
+
+		$col = "user_id";
+		$table_name = 'user';
+		$body['user'] = $this->model_base->get_one($user,$col,$table_name);
+		$this->db->flush_cache();
+
+		$col = "senti_id";
+		$table_name = 'sentiment';
+		$body['senti'] = $this->model_base->get_one($senti,$col,$table_name);
+		$this->db->flush_cache();
+
+		$this->load->view("template/site_admin_header",$header);
+		$this->load->view('admin/schedule/follow-up',$body);
 		$this->load->view("template/site_admin_footer",$footer);
 
 	}

@@ -83,6 +83,7 @@
                       <th>Name</th>
                       <th>Meeting date</th>
                       <th>Sentiment</th>
+                      <th>Check-up type</th>
                       <th>Action</th>
                       <th></th>
                       <th></th>
@@ -96,10 +97,11 @@
                         <td><?php echo ucfirst($schedule['user_fname']) .' '.ucfirst($schedule['user_mname']).'. '. ucfirst($schedule['user_lname']); ?></td>
                         <td><?php echo date("F j, Y, g:i a",strtotime($schedule['sched_date'])) ?></td>
                         <td><?php echo $schedule['senti_text']; ?></td>
+                        <td><?php echo $schedule['sched_mod']; ?></td>
                           <?php 
                               if($this->uri->segment("5") == 'all'){
                                   echo ' <td><a  href="'. base_url().'admin/schedule/proceed/'.$schedule['sched_id'] .'" class="btn btn-block btn-outline-info">Proceed to meeting</a></td>';
-                                   echo ' <td><a  href="'. base_url().'admin/schedule/resched/'.$schedule['user_id'] .'/'.$schedule['senti_id'] .'/'.$schedule['sched_id'].'" class="btn btn-block btn-outline-warning">Resched</a></td><td></td>';
+                                  echo ' <td><a  href="'. base_url().'admin/schedule/resched/'.$schedule['user_id'] .'/'.$schedule['senti_id'] .'/'.$schedule['sched_id'].'" class="btn btn-block btn-outline-warning">Resched</a></td><td></td>';
                                 }
                                 if($this->uri->segment("5") == 'ongoing'){
                                   echo ' <td><a  href="' .base_url().'admin/schedule/done/'.$schedule['sched_id'] .'" class="btn btn-block btn-outline-success">Done</a></td><td></td><td></td>';

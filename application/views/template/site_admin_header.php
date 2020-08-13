@@ -205,7 +205,7 @@
             <a href="<?php echo base_url() ?>admin/intervention/index" class="nav-link">
               <i class="nav-icon fas fa-clipboard-list"></i>
               <p>
-                Intervention plan
+                Sentiment Case
                 <!-- <span class="badge badge-info right">2</span> -->
               </p>
             </a>

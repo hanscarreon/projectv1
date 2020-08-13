@@ -117,7 +117,7 @@
                           <p><?php echo $sentiment["senti_text"]; ?></p>
                         </td>
 
-                        <td><a  href="<?php echo base_url()?>admin/schedule/set/<?php echo $sentiment['user_id'].'/'.$sentiment['senti_id'] ?>" class="btn btn-block btn-outline-info">Set Schedule</a></td>
+                        <td><a  href="<?php echo base_url()?>admin/schedule/set/<?php echo $sentiment['user_id'].'/'.$sentiment['senti_id'] ?>/normal" class="btn btn-block btn-outline-info">Set Schedule</a></td>
                         <td><a  class="btn btn-block btn-outline-danger">Delete</a></td>
                       </tr>
                       <?php endforeach; ?>
