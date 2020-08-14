@@ -149,7 +149,6 @@ class Dashboard extends CI_Controller {
 
     	}
 
-    	
     	if($cases != 'study'){
     		$this->db->where('case_study',$cases);
     	}
