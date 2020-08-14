@@ -1,5 +1,4 @@
 <div class="row ">
-  <?php echo print_r($data); ?>
   
 <div class="col-md-8 col-sm-12 col-12">
     
@@ -58,8 +57,20 @@
           <div class="col-sm-10">
             <select class="form-control select2 select2-hidden-accessible" name="user_role" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true">
               <option selected="selected" data-select2-id="3">Select Role</option>
-              <option value="student">Student</option>
               <option value="admin">Admin/Teacher</option>
+              <option value="student">Student</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="user_role" class="col-sm-2 col-form-label">Curriculum</label>
+          <div class="col-sm-10">
+            <select class="form-control select2 select2-hidden-accessible" name="user_pos" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true">
+              <option selected="selected" data-select2-id="3">Select Curriculum Level</option>
+              <option value="col">College Student</option>
+              <option value="hs">Secondary Student / Grade Student</option>
+              <option value="elem">Elementary Student / Grade Student</option>
             </select>
           </div>
         </div>

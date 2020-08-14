@@ -55,7 +55,6 @@ class Model_base extends CI_Model {
 	public function count_data_status($table_name,$col,$val) {
 		$this->db->select('*');
 		$this->db->from($table_name);
-		$this->db->where("senti_status !=","deleted");
 		$this->db->where($col,$val);
 		$query = $this->db->get();
 		$num = $query->num_rows();

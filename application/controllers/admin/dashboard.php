@@ -14,52 +14,54 @@ class Dashboard extends CI_Controller {
 			$this->logout_admin();	
 		}
 	}
-	public function index($slug="all",$mood="mood",$status="status",$filter="1"){
+	public function index($name="name",$case="study",$con="con",$pos='all',$filter="1"){
 
 		$header = [];
 		$body = [];
 		$footer = [];
 
+		$pos =  $this->session->userdata('user_pos');
+
 		$body["user_name"] = $this->uri->segment("4");
-		$body["senti_mood"] = $this->uri->segment("5");
-		$body["senti_status"] = $this->uri->segment("6");
+		$body["case_study"] = $this->uri->segment("5");
+		$body["case_con"] = $this->uri->segment("6");
+		$body["user_pos"] = $pos;
 
-		if($this->input->post("search_mode")){
-			$this->form_validation->set_rules('search_name', 'search name', 'trim');
-			$this->form_validation->set_rules('senti_mood', 'search name', 'trim');
-			$this->form_validation->set_rules('senti_status', 'search name', 'trim');
-			if ($this->form_validation->run() == FALSE) {
-				$body['msg_error'] = validation_errors();
-			} else {
-				$data = $this->input->post();
-				unset($data['search_mode']);
-				if(!empty($data["search_name"])){
-					$data["search_name"] = $data["search_name"];
-				}else{
-					$data["search_name"] ="all";
-				}
+		// if($this->input->post("search_mode")){
+		// 	$this->form_validation->set_rules('search_name', 'search name', 'trim');
+		// 	if ($this->form_validation->run() == FALSE) {
+		// 		$body['msg_error'] = validation_errors();
+		// 	} else {
+		// 		$data = $this->input->post();
+		// 		unset($data['search_mode']);
+		// 		if(!empty($data["search_name"])){
+		// 			$data["search_name"] = $data["search_name"];
+		// 		}else{
+		// 			$data["search_name"] ="all";
+		// 		}
 
-				if(!empty($data["senti_mood"])){
-					$data["senti_mood"] = $data["senti_mood"];
-				}else{
-					$data["senti_mood"] ="mood";
-				}
-				if(!empty($data["senti_status"])){
-					$data["senti_status"] = $data["senti_status"];
-				}else{
-					$data["senti_status"] ="status";
-				}
-				redirect('admin/dashboard/index/' . $data['search_name'] . '/'.$data["senti_mood"].'/'.$data["senti_status"],'refresh');
-			}
-		}
+		// 		if(!empty($data["senti_mood"])){
+		// 			$data["senti_mood"] = $data["senti_mood"];
+		// 		}else{
+		// 			$data["senti_mood"] ="mood";
+		// 		}
+		// 		if(!empty($data["senti_status"])){
+		// 			$data["senti_status"] = $data["senti_status"];
+		// 		}else{
+		// 			$data["senti_status"] ="status";
+		// 		}
+		// 		redirect('admin/dashboard/index/' . $data['search_name'] . '/'.$data["senti_mood"].'/'.$data["senti_status"],'refresh');
+		// 	}
+		// }
 
 		$config = array();
-		$config["base_url"] = base_url() .'admin/dashboard/index/'.$body["user_name"].'/'.$body["senti_mood"].'/'.$body["senti_status"].'/';
-		$this->_sorting($slug,$mood,$status);
-		$total_row = $this->model_base->count_data('sentiment');
+		$config["base_url"] = base_url() .'admin/dashboard/index/'.$body["user_name"].'/'.$body["case_study"].'/'.$body["case_con"].'/'.$body["user_pos"].'/';
+		$this->db->join("user", "sentiment_case.user_id = user.user_id");
+		$this->_sorting($name,$case,$con,$pos);
+		$total_row = $this->model_base->count_data('sentiment_case');
 		$config["total_rows"] = $total_row;
-		$config['per_page'] = 8;
-		$config['uri_segment'] = 7;
+		$config['per_page'] = 6;
+		$config['uri_segment'] = 8;
 		$config['num_links'] = 5;
 		$config['use_page_numbers'] = TRUE;
 
@@ -95,81 +97,78 @@ class Dashboard extends CI_Controller {
 		$offset = ($filter - 1) * $config["per_page"];
 		$this->db->limit( $config["per_page"] , $offset);
 		$this->db->flush_cache();
-		// $this->db->join("user", "sentiment.user_id = user.user_id");
-		$this->_sorting($slug,$mood,$status);
-		$this->db->where('sentiment.senti_status','published');
-		// $this->db->group_by('sentiment.user_id,user.user_id');
-		$body['sentiments'] = $this->model_base->get_all('sentiment');
+
+		$this->db->join("user", "sentiment_case.user_id = user.user_id");
+		$this->_sorting($name,$case,$con,$pos);
+		$this->db->where('sentiment_case.case_status','published');
+		// // $this->db->group_by('sentiment.user_id,user.user_id');
+		$body['sentiments'] = $this->model_base->get_all('sentiment_case');
 		$this->db->flush_cache();
 
 
-		$col = "senti_mood";
+		$col = "case_study";
 		$val = "positive";
-		$body["positive"] = $this->model_base->count_data_status("sentiment",$col,$val);
+		$this->_count_sort($pos);
+		$body["positive"] = $this->model_base->count_data_status("sentiment_case",$col,$val);
 
-		$col = "senti_mood";
+		$col = "case_study";
 		$val = "neutral";
-		$body["neutral"] = $this->model_base->count_data_status("sentiment",$col,$val);
+		$this->_count_sort($pos);
+		$body["neutral"] = $this->model_base->count_data_status("sentiment_case",$col,$val);
 
-		$col = "senti_mood";
+		$col = "case_study";
 		$val = "negative";
-		$body["negative"] = $this->model_base->count_data_status("sentiment",$col,$val);
+		$this->_count_sort($pos);
+		$body["negative"] = $this->model_base->count_data_status("sentiment_case",$col,$val);
 
-		$body["total"]=$total_row;
+
+		$this->_count_sort($pos);
+		$overall = $this->model_base->count_data('sentiment_case');
+		// $body["total"]= $config["total_rows"];
+		$body["total"]= $overall;
 		$this->load->view("template/site_admin_header",$header);
 		$this->load->view('admin/view_dashboard',$body);
 		$this->load->view("template/site_admin_footer",$footer);
+
+	}
+	public function _count_sort($pos){
+		$this->db->join("user", "sentiment_case.user_id = user.user_id");
+		$this->db->where('case_status','published');
+    	$this->db->where('user.user_pos',$pos);
+
 
 	}
 	
-    public function _sorting($slug,$mood,$status){
+    public function _sorting($name,$cases,$con,$pos){
     	// $this->db->where('mot_status ', 'published');
-		$this->db->join("user", "sentiment.user_id = user.user_id");
 
-    	if($mood != 'mood'){
-    		$this->db->where('senti_mood',$mood);
-    	}
-    	if($status != 'status'){
-    		$this->db->where('senti_status',$status);
-
-    	}
-    	if($slug != 'all'){
-    		$this->db->like('user.user_fname',$slug,'both');
-    		$this->db->or_like('user.user_lname',$slug,'both');
-    		$this->db->or_like('user.user_mname',$slug,'both');
+    	if($name != 'name'){
+    		$this->db->like('user.user_fname',$name,'both');
+    		$this->db->or_like('user.user_lname',$name,'both');
+    		$this->db->or_like('user.user_mname',$name,'both');
 
     	}
 
+    	
+    	if($cases != 'study'){
+    		$this->db->where('case_study',$cases);
+    	}
+    	if($con != 'con'){
+    		$this->db->where('case_con',$con);
 
+    	}
+    	$this->db->where('user.user_pos',$pos);
     }
-
-
-
-
-
-
-
-
-    public function check($text){
-		$header = [];
-		$body = [];
-		$footer = [];
-
-		$text = "Fuck you mother fucker";
-		$data = $this->detect_sentiment($text);
-		// echo "<pre>";
-		// print_r($data);
-		// echo "</pre>";
-		$body["state"] = $data["data"]["state"]; // state result
-		// $body["status"] = $data;
-		// $body["status"] = $data;
-
-
-		$this->load->view("template/site_admin_header",$header);
-		$this->load->view('admin/view_dashboard',$body);
-		$this->load->view("template/site_admin_footer",$footer);
-
+    public function delete_case($case_id) {
+		$body['sentiments'] = $this->model_base->delete_data($case_id, 'case_id', 'case_status', 'sentiment_case');
+		$this->session->set_flashdata('msg_success', 'Case Deleted!');	
+		redirect('admin/dashboard/index/name/study/con','refresh');
+		
 	}
+
+
+
+
 
 	public function detect_sentiment($string){
 		$string = urlencode($string);

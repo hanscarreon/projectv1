@@ -3,7 +3,6 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Sort By:</h3>
-
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse">
                 <i class="fas fa-minus"></i>
@@ -19,7 +18,7 @@
               <li class="item">
                 <div class="product-info">
                   <i class="far fa-laugh text-success"></i>
-                  <a href="<?php echo base_url() ?>admin/dashboard/index/all/positive/status" class="product-title text-success"> Positive
+                  <a href="<?php echo base_url() ?>admin/dashboard/index/name/positive/con" class="product-title text-success"> Positive
                     <span class="badge badge-success float-right"><?php echo number_format($positive); ?></span></a>
                 </div>
               </li>
@@ -27,7 +26,7 @@
               <li class="item">
                 <div class="product-info">
                   <i class="far fa-meh text-warning"></i>
-                  <a href="<?php echo base_url() ?>admin/dashboard/index/all/neutral/status" class="product-title text-warning"> Neutral
+                  <a href="<?php echo base_url() ?>admin/dashboard/index/name/neutral/con" class="product-title text-warning"> Neutral
                     <span class="badge badge-warning float-right"><?php echo number_format($neutral); ?></span></a>
                 </div>
               </li>
@@ -35,7 +34,7 @@
               <li class="item">
                 <div class="product-info">
                   <i class="far fa-angry text-danger"></i>
-                  <a href="<?php echo base_url() ?>admin/dashboard/index/all/negative/status" class="product-title text-danger"> Negative
+                  <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="product-title text-danger"> Negative
                     <span class="badge badge-danger float-right"><?php echo number_format($negative); ?></span>
                   </a>
                 </div>
@@ -43,8 +42,8 @@
               <li class="item">
                 <div class="product-info">
                   <i class="far fa-angry text-info"></i>
-                  <a href="<?php echo base_url() ?>admin/dashboard/index/all/mood/status" class="product-title text-info"> Total Analysis
-                    <span class="badge badge-danger float-right"><?php echo number_format($total); ?></span>
+                  <a href="<?php echo base_url() ?>admin/dashboard/index/name/study/con" class="product-title text-info"> Total Analysis
+                    <span class="badge badge-info float-right"><?php echo number_format($total); ?></span>
                   </a>
                 </div>
               </li>
@@ -53,7 +52,7 @@
           </div>
           <!-- /.card-body -->
           <div class="card-footer text-center">
-            <a href="<?php echo base_url() ?>admin/dashboard/index/all/mood/status" class="uppercase">View All</a>
+            <a href="<?php echo base_url() ?>admin/dashboard/index/name/study/con" class="uppercase">View All</a>
           </div>
           <!-- /.card-footer -->
         </div>
@@ -93,32 +92,32 @@
                      <?php  if ( isset( $sentiments ) && count($sentiments) >= 1 ):?>
                       <?php foreach($sentiments as $sentiment): ?>
                       <tr>
-                        <td><?php echo $sentiment['senti_id']; ?></td>
+                        <td><?php echo $sentiment['case_id']; ?></td>
                         <td><?php echo ucfirst($sentiment['user_fname']); ?> <?php echo ucfirst($sentiment['user_mname']); ?> <?php echo ucfirst($sentiment['user_lname']); ?></td>
-                        <td><?php echo date("F j, Y, g:i a",strtotime($sentiment['senti_create'])) ?></td>
+                        <td><?php echo date("F j, Y, g:i a",strtotime($sentiment['case_created'])) ?></td>
                         <td>
                             <?php  
-                            if ($sentiment["senti_mood"] == 'positive') 
+                            if ($sentiment["case_study"] == 'positive') 
                               { 
-                                echo '<span class="tag text-success">'.$sentiment["senti_mood"].'</span>';
+                                echo '<span class="tag text-success">'.$sentiment["case_study"].'</span>';
                              }
-                              if ($sentiment["senti_mood"] == 'neutral') 
+                              if ($sentiment["case_study"] == 'neutral') 
                               { 
-                                echo '<span class="tag text-primary">'.$sentiment["senti_mood"].'</span>';
+                                echo '<span class="tag text-warning">'.$sentiment["case_study"].'</span>';
                              }
-                              if ($sentiment["senti_mood"] == 'negative') 
+                              if ($sentiment["case_study"] == 'negative') 
                               { 
-                                echo '<span class="tag text-danger">'.$sentiment["senti_mood"].'</span>';
+                                echo '<span class="tag text-danger">'.$sentiment["case_study"].'</span>';
                              }
                           ?>
                           </span>
                         </td>
                          <td>
-                          <p><?php echo $sentiment["senti_text"]; ?></p>
+                          <p><?php echo $sentiment["case_text"]; ?></p>
                         </td>
 
-                        <td><a  href="<?php echo base_url()?>admin/schedule/set/<?php echo $sentiment['user_id'].'/'.$sentiment['senti_id'] ?>/normal" class="btn btn-block btn-outline-info">Set Schedule</a></td>
-                        <td><a  class="btn btn-block btn-outline-danger">Delete</a></td>
+                        <td><a  href="<?php echo base_url()?>admin/schedule/set/<?php echo $sentiment['user_id'].'/'.$sentiment['case_id'] ?>/normal" class="btn btn-block btn-outline-info">Set Schedule</a></td>
+                        <td><a href="<?php echo base_url()?>admin/dashboard/delete_case/<?php echo $sentiment['case_id'] ?>"  class="btn btn-block btn-outline-danger">Delete</a></td>
                       </tr>
                       <?php endforeach; ?>
                     

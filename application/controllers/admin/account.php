@@ -42,13 +42,13 @@ class Account extends CI_Controller {
 		$this->form_validation->set_rules('user_lname', 'Lastname', 'required|trim');
 		$this->form_validation->set_rules('user_mname', 'Middlename', 'required|trim');
 		$this->form_validation->set_rules('user_role', 'Role', 'required|trim');
+		$this->form_validation->set_rules('user_pos', 'Curriculum', 'required|trim');
 		// $this->form_validation->set_rules('usr_contact', 'Contact Number', 'required|trim');
 
 		if($this->input->post("create_account")){
 			 if ($this->form_validation->run() == FALSE){
 			 	$body['msg_error'] = validation_errors();
 				$body["data"] = "error";
-
         	}
         	else{
         		$data = $this->input->post();
@@ -58,25 +58,21 @@ class Account extends CI_Controller {
 				$this->model_base->insert_data($data, 'user');
 				$this->session->set_flashdata('msg_success', 'Successfully created!');
 				$this->db->flush_cache();
-				
-				
-				redirect('admin/account/create' ,'refresh');
+				redirect('admin/account/view' ,'refresh');
           		
        		 }
 
 		}
-
-
 		$this->load->view("template/site_admin_header",$header);
 		$this->load->view('admin/account/create',$body);
 		$this->load->view("template/site_admin_footer",$footer);
 
 	}
-	public function view($filter){
+	public function view(){
 		$header = [];
 		$body = [];
 		$footer = [];
-		$body["filter"] = $filter;
+		$body["filter"] = "test";
 		
 		$this->load->view("template/site_admin_header",$header);
 		$this->load->view('admin/account/view',$body);

@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require APPPATH.'libraries/REST_Controller.php';
 
-class Student extends REST_Controller{
+class Sentiment extends REST_Controller{
 
   public function __construct(){
 
@@ -34,7 +34,7 @@ class Student extends REST_Controller{
      $_POST = json_decode(file_get_contents("php://input"), true);  // get post value
 
     // form validation for inputs
-    $this->form_validation->set_rules("senti_text", "sentiment text", "required");
+    $this->form_validation->set_rules("case_text", "sentiment text", "required");
     $this->form_validation->set_rules("user_id", "sentiment text", "required");
     if($this->form_validation->run() == FALSE){
     	// echo json_encode(validation_errors());
@@ -42,28 +42,27 @@ class Student extends REST_Controller{
     	// return JSON.stringify(validation_errors());
 
     }else{
-  	 $data = $this->input->post();
-	 $data['senti_create'] = $this->getDatetimeNow();
-	 $data['senti_text'] = $this->input->post("senti_text");
-	 $data['senti_mood'] = $this->input->post("senti_text");
-	 $senti_mood = $this->detect_sentiment($data['senti_mood']);
-	 $data['senti_mood'] = strtolower($senti_mood['data']['state']);
-     $table = "sentiment";
-     	if($this->model_base->insert_data($data, $table)){
-				$this->db->flush_cache();
+       $data = $this->input->post();
+    	 $data['case_created'] = $this->getDatetimeNow();
+    	 $data['case_study'] = $this->input->post("case_text");
+    	 $senti_mood = $this->detect_sentiment($data['case_study']);
+    	 $data['case_study'] = strtolower($senti_mood['data']['state']);
+         $table = "sentiment_case";
+         	if($this->model_base->insert_data($data, $table)){
+    				$this->db->flush_cache();
 
-	          $this->response(array(
-	            "status" => 1,
-	            "message" => "Student has been created"
-	          ), REST_Controller::HTTP_OK);
+    	          $this->response(array(
+    	            "status" => 1,
+    	            "message" => "Sentiment Case Created!"
+    	          ), REST_Controller::HTTP_OK);
 
-     	}else{
-     		  $this->response(array(
-	            "status" => 0,
-	            "message" => "Failed to create student"
-	          ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+         	}else{
+         		  $this->response(array(
+    	            "status" => 0,
+    	            "message" => "Failed to Sentiment Case!"
+    	          ), REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
 
-     	}
+         	}
 
     }
   

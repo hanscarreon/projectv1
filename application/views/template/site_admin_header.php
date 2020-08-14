@@ -184,7 +184,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="<?php echo base_url(); ?>admin/dashboard/index/all/mood/status" class="nav-link">
+            <a href="<?php echo base_url(); ?>admin/dashboard/index/name/study/con" class="nav-link">
                <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
