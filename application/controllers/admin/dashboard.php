@@ -27,32 +27,22 @@ class Dashboard extends CI_Controller {
 		$body["case_con"] = $this->uri->segment("6");
 		$body["user_pos"] = $pos;
 
-		// if($this->input->post("search_mode")){
-		// 	$this->form_validation->set_rules('search_name', 'search name', 'trim');
-		// 	if ($this->form_validation->run() == FALSE) {
-		// 		$body['msg_error'] = validation_errors();
-		// 	} else {
-		// 		$data = $this->input->post();
-		// 		unset($data['search_mode']);
-		// 		if(!empty($data["search_name"])){
-		// 			$data["search_name"] = $data["search_name"];
-		// 		}else{
-		// 			$data["search_name"] ="all";
-		// 		}
-
-		// 		if(!empty($data["senti_mood"])){
-		// 			$data["senti_mood"] = $data["senti_mood"];
-		// 		}else{
-		// 			$data["senti_mood"] ="mood";
-		// 		}
-		// 		if(!empty($data["senti_status"])){
-		// 			$data["senti_status"] = $data["senti_status"];
-		// 		}else{
-		// 			$data["senti_status"] ="status";
-		// 		}
-		// 		redirect('admin/dashboard/index/' . $data['search_name'] . '/'.$data["senti_mood"].'/'.$data["senti_status"],'refresh');
-		// 	}
-		// }
+		if($this->input->post("search_mode")){
+			$this->form_validation->set_rules('search_name', 'search name', 'trim');
+			if ($this->form_validation->run() == FALSE) {
+				$body['msg_error'] = validation_errors();
+			} else {
+				$data = $this->input->post();
+				unset($data['search_mode']);
+				if(!empty($data["search_name"])){
+					$data["search_name"] = $data["search_name"];
+				}else{
+					$data["search_name"] ="name";
+				}
+				
+				redirect('admin/dashboard/index/' . $data['search_name'] . '/'.$body["case_study"].'/'.$body["case_con"],'refresh');
+			}
+		}
 
 		$config = array();
 		$config["base_url"] = base_url() .'admin/dashboard/index/'.$body["user_name"].'/'.$body["case_study"].'/'.$body["case_con"].'/'.$body["user_pos"].'/';
@@ -134,13 +124,14 @@ class Dashboard extends CI_Controller {
 	public function _count_sort($pos){
 		$this->db->join("user", "sentiment_case.user_id = user.user_id");
 		$this->db->where('case_status','published');
+		$this->db->where('case_con','ongoing');
     	$this->db->where('user.user_pos',$pos);
 
 
 	}
 	
     public function _sorting($name,$cases,$con,$pos){
-    	// $this->db->where('mot_status ', 'published');
+		$this->db->where('case_status','published');
 
     	if($name != 'name'){
     		$this->db->like('user.user_fname',$name,'both');
@@ -154,6 +145,8 @@ class Dashboard extends CI_Controller {
     	}
     	if($con != 'con'){
     		$this->db->where('case_con',$con);
+    	}else{
+    		$this->db->where('case_con','ongoing');
 
     	}
     	$this->db->where('user.user_pos',$pos);

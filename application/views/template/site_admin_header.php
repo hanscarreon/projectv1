@@ -193,23 +193,44 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="<?php echo base_url() ?>admin/schedule/index/all/all" class="nav-link">
+            <a href="<?php echo base_url() ?>admin/schedule/index/name/case/status" class="nav-link">
               <i class="nav-icon far fa-calendar-alt"></i>
               <p>
-                Schedule
+                Meeting Schedule
                 <!-- <span class="badge badge-info right">2</span> -->
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="<?php echo base_url() ?>admin/intervention/index" class="nav-link">
+           <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-clipboard-list"></i>
               <p>
                 Sentiment Case
-                <!-- <span class="badge badge-info right">2</span> -->
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?php echo base_url() ?>admin/account/view/all" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Close case</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url() ?>admin/account/create" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Recommened to SDO </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url() ?>admin/account/create" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Intervention plan  </p>
+                </a>
+              </li>
+            </ul>
           </li>
+
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-plus-square"></i>

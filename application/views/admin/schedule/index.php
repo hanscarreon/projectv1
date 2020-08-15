@@ -21,30 +21,21 @@
                   <li class="item">
                     <div class="product-info">
                       <i class="far fa-clock text-info"></i>
-                      <a href="<?php echo base_url() ?>admin/schedule/index/all/all" class="product-title text-info">Meeting
+                      <a href="<?php echo base_url() ?>admin/schedule/index/name/waiting/status" class="product-title text-info">Meeting
                         <!-- <span class="badge badge-success float-right"><?php echo number_format($positive); ?></span></a> -->
                     </div>
                   </li>
-                  <li class="item">
+                  <!-- <li class="item">
                     <div class="product-info">
                       <i class="fas fa-user-clock text-warning"></i>
-                      <a href="<?php echo base_url() ?>admin/schedule/index/all/ongoing" class="product-title text-warning">Ongoing
-                        <!-- <span class="badge badge-success float-right"><?php echo number_format($positive); ?></span></a> -->
+                      <a href="<?php echo base_url() ?>admin/schedule/index/name/online/status" class="product-title text-warning">Ongoing
                     </div>
-                  </li>
-                  <!-- /.item -->
-                  <li class="item">
-                    <div class="product-info">
-                      <i class="fas fa-business-time text-danger"></i>
-                      <a href="<?php echo base_url() ?>admin/schedule/index/all/resched" class="product-title text-danger"> Resched
-                        <!-- <span class="badge badge-warning float-right"><?php echo number_format($neutral); ?></span></a> -->
-                    </div>
-                  </li>
+                  </li> -->
                   <!-- /.item -->
                   <li class="item">
                     <div class="product-info">
                       <i class="far fa-check-circle text-success"></i>
-                      <a href="<?php echo base_url() ?>admin/schedule/index/all/done" class="product-title text-success"> Done
+                      <a href="<?php echo base_url() ?>admin/schedule/index/name/done/status" class="product-title text-success"> Done
                         <!-- <span class="badge badge-danger float-right"><?php echo number_format($negative); ?></span> -->
                       </a>
                     </div>
@@ -54,7 +45,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer text-center">
-                <!-- <a href="<?php echo base_url() ?>admin/dashboard/index/all/mood/status" class="uppercase">View All</a> -->
+                <a href="<?php echo base_url() ?>admin/schedule/index/name/case/status" class="uppercase">View All</a>
               </div>
               <!-- /.card-footer -->
             </div>
@@ -82,8 +73,7 @@
                       <th>ID</th>
                       <th>Name</th>
                       <th>Meeting date</th>
-                      <th>Sentiment</th>
-                      <th>Check-up type</th>
+                      <th>Sentiment text</th>
                       <th>Action</th>
                       <th></th>
                       <th></th>
@@ -93,31 +83,39 @@
                    <?php  if ( isset( $schedules ) && count($schedules) >= 1 ):?> 
                       <?php foreach($schedules as $schedule): ?>
                        <tr>
-                        <td><?php echo $schedule['sched_id']; ?></td>
+                        <td><?php echo $schedule['meet_id']; ?></td>
                         <td><?php echo ucfirst($schedule['user_fname']) .' '.ucfirst($schedule['user_mname']).'. '. ucfirst($schedule['user_lname']); ?></td>
-                        <td><?php echo date("F j, Y, g:i a",strtotime($schedule['sched_date'])) ?></td>
-                        <td><?php echo $schedule['senti_text']; ?></td>
-                        <td><?php echo $schedule['sched_mod']; ?></td>
-                          <?php 
-                              if($this->uri->segment("5") == 'all'){
-                                  echo ' <td><a  href="'. base_url().'admin/schedule/proceed/'.$schedule['sched_id'] .'" class="btn btn-block btn-outline-info">Proceed to meeting</a></td>';
-                                  echo ' <td><a  href="'. base_url().'admin/schedule/resched/'.$schedule['user_id'] .'/'.$schedule['senti_id'] .'/'.$schedule['sched_id'].'" class="btn btn-block btn-outline-warning">Resched</a></td><td></td>';
-                                }
-                                if($this->uri->segment("5") == 'ongoing'){
-                                  echo ' <td><a  href="' .base_url().'admin/schedule/done/'.$schedule['sched_id'] .'" class="btn btn-block btn-outline-success">Done</a></td><td></td><td></td>';
-                                 
-                                }
-                                if($this->uri->segment("5") == 'resched'){
-                                   echo ' <td><a  href="'. base_url().'admin/schedule/proceed/'.$schedule['sched_id'] .'" class="btn btn-block btn-outline-info">Proceed to meeting</a></td>';
-                                   echo ' <td><a  href="'. base_url().'admin/schedule/resched/'.$schedule['user_id'] .'/'.$schedule['senti_id'] .'/'.$schedule['sched_id'].'" class="btn btn-block btn-outline-warning">Resched</a></td><td></td>';
-                                 
-                                }
-                                 if($this->uri->segment("5") == 'done'){
-                                   echo ' <td><a  href="'. base_url().'admin/intervention/create/'.$schedule['user_id'] .'/'.$schedule['senti_id'] .'/'.$schedule['sched_id'].'" class="btn btn-block btn-outline-info">Analyze case</a></td><td></td><td></td>';
-                                   
-                                }
-                           ?>
-                        <!-- <td><a  class="btn btn-block btn-outline-danger">Delete</a></td> -->
+                          <?php if( date("Y-m-d") > date("Y-m-d",strtotime($schedule['meet_date'])) && $schedule['meet_case'] == 'waiting' ): ?>
+                            <td><span class="text-danger"><?php echo date("F j, Y, g:i a",strtotime($schedule['meet_date'])) ?> </span></td>
+                             <?php elseif(date("Y-m-d") == date("Y-m-d",strtotime($schedule['meet_date'])) && $schedule['meet_case'] == 'waiting' ): ?>
+                            <td><span class="text-warning"><?php echo date("F j, Y, g:i a",strtotime($schedule['meet_date'])) ?> </span></td>
+                            <?php elseif($schedule['meet_case'] == 'done'): ?>
+                            <td><span class="text-success"><?php echo date("F j, Y, g:i a",strtotime($schedule['meet_date'])) ?> </span></td>
+                          <?php else: ?>
+                            <td><span class="text-info"><?php echo date("F j, Y, g:i a",strtotime($schedule['meet_date'])) ?> </span></td>
+
+                          <?php endif; ?>
+
+                         <!-- <td><?php echo date("F j, Y, g:i a",strtotime($schedule['meet_date'])) ?></td>  -->
+
+
+                        <td><p><?php echo $schedule['case_text']; ?></p></td>
+                          <?php if( $schedule['meet_case'] == 'waiting'): ?>
+                          <td><a  href="<?php echo base_url() ?>admin/schedule/ongoing/<?php echo $schedule['meet_id']  ?>" class="btn btn-block btn-outline-info">Proceed to meeting</a></td>
+                          <td><a  href="" class="btn btn-block btn-outline-warning">Reschedule</a></td>
+                          <td><a  href="" class="btn btn-block btn-outline-danger">Delete</a></td>
+                          <?php endif; ?>
+                          <!-- /. waiting -->
+                          <?php if( $schedule['meet_case'] == 'done'): ?>
+                         <!--  <td><a  href="<?php echo base_url() ?>admin/schedule/ongoing/<?php echo $schedule['meet_id']  ?>" class="btn btn-block btn-outline-info">Proceed to meeting</a></td>
+                          <td><a  href="" class="btn btn-block btn-outline-warning">Reschedule</a></td>
+                          <td><a  href="" class="btn btn-block btn-outline-danger">Delete</a></td> -->
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          <?php endif; ?>
+                          <!-- /. done -->
+
                        </tr>
 
                       <?php endforeach; ?>

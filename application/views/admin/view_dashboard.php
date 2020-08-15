@@ -65,13 +65,15 @@
                 <h3 class="card-title">Responsive Hover Table</h3>
 
                 <div class="card-tools">
+                  <form method="POST">
                   <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                    <input type="text" name="search_name" value="<?php echo $this->uri->segment("4") != 'name' ? $this->uri->segment("4"): '' ?>" class="form-control float-right" placeholder="Search Name">
 
                     <div class="input-group-append">
-                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                      <button type="submit" name="search_mode" value="search_mode" class="btn btn-default"><i class="fas fa-search"></i></button>
                     </div>
                   </div>
+                </form>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -79,7 +81,7 @@
                 <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Case-ID No.</th>
                         <th>Name</th>
                         <th>Date created</th>
                         <th>Result</th>
@@ -90,9 +92,9 @@
                   </thead>
                   <tbody>
                      <?php  if ( isset( $sentiments ) && count($sentiments) >= 1 ):?>
-                      <?php foreach($sentiments as $sentiment): ?>
+                      <?php $x=1; foreach($sentiments as $sentiment): ?>
                       <tr>
-                        <td><?php echo $sentiment['case_id']; ?></td>
+                      <td><?php echo $sentiment['case_id'] ?></td>
                         <td><?php echo ucfirst($sentiment['user_fname']); ?> <?php echo ucfirst($sentiment['user_mname']); ?> <?php echo ucfirst($sentiment['user_lname']); ?></td>
                         <td><?php echo date("F j, Y, g:i a",strtotime($sentiment['case_created'])) ?></td>
                         <td>

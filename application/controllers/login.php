@@ -39,7 +39,7 @@ class Login extends CI_Controller {
 					if( count($account) >= 1){
 	    				$this->session->set_flashdata('msg_success', 'Successfully log in!');
 	    				$this->session->set_userdata($account[0]);	
-						redirect('admin/dashboard','refresh');
+						redirect('admin/dashboard/index/name/study/con/col/','refresh');
 
 					}else{
 	    				$body['msg_error'] = 'Invalid Account';

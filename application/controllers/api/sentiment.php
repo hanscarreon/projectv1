@@ -30,7 +30,7 @@ class Sentiment extends REST_Controller{
 		return $response;
    }
 
-  public function index_post(){
+  public function create_post(){
      $_POST = json_decode(file_get_contents("php://input"), true);  // get post value
 
     // form validation for inputs

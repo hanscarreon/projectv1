@@ -14,22 +14,25 @@ class Schedule extends CI_Controller {
 			$this->logout_admin();	
 		}
 	}
-	public function index($slug="all",$status="all",$mod='all',$filter="1"){
+	public function index($name="name", $case="case",$status="case",$pos='all',$filter="1"){
 		$header = [];
 		$body = [];
 		$footer = [];
-		
+
+		$pos =  $this->session->userdata('user_pos');
 		$body["user_name"] = $this->uri->segment("4");
-		$body["senti_status"] = $this->uri->segment("5");
-		$body["sched_mod"] = $this->uri->segment("6");
+		$body["meet_case"] = $this->uri->segment("5");
+		$body["meet_status"] = $this->uri->segment("6");
+		$body["user_pos"] = $pos;
 
 		$config = array();
-		$config["base_url"] = base_url() .'admin/schedule/set/'.$body["user_name"].'/'.$body["senti_status"].'/'.$body["sched_mod"].'/';
-		$this->_sorting($slug,$status,$mod);
-		$total_row = $this->model_base->count_data('senti_sched');
+		$config["base_url"] = base_url() .'admin/schedule/set/'.$body["user_name"].'/'.$body["meet_case"].'/'.$body["meet_status"].'/'.$body["user_pos"].'/';
+		$this->_sorting($name,$case,$status,$pos);
+		
+		$total_row = $this->model_base->count_data('sentimend_meeting as sm');
 		$config["total_rows"] = $total_row;
-		$config['per_page'] = 8;
-		$config['uri_segment'] = 7;
+		$config['per_page'] = 6;
+		$config['uri_segment'] = 8;
 		$config['num_links'] = 5;
 		$config['use_page_numbers'] = TRUE;
 
@@ -66,10 +69,10 @@ class Schedule extends CI_Controller {
 		$this->db->limit( $config["per_page"] , $offset);
 		$this->db->flush_cache();
 
-
-
-		$this->_sorting($slug,$status,$mod);
-		$body['schedules'] = $this->model_base->get_all('senti_sched');
+		$body["time_now"] = $this->getDatetimeNow();
+		
+		$this->_sorting($name,$case,$status,$pos);
+		$body['schedules'] = $this->model_base->get_all('sentimend_meeting as sm');
 		$this->db->flush_cache();
 
 
@@ -79,35 +82,41 @@ class Schedule extends CI_Controller {
 		$this->load->view('admin/schedule/index',$body);
 		$this->load->view("template/site_admin_footer",$footer);
 	}
-	public function _sorting($slug,$status,$mod){
-		$this->db->join("user", "senti_sched.user_id = user.user_id");
-		$this->db->join("sentiment", "senti_sched.senti_id = sentiment.senti_id");
-		$this->db->where("sentiment.senti_status", 'meeting');
-		if($slug != 'all'){
-			$this->db->like("user.user_fname", $slug);
-			$this->db->or_like("user.user_lname", $slug);
-			$this->db->or_like("user.user_mname", $slug);
+	public function _sorting($name,$case,$status,$pos){
+		$this->db->join('user','user.user_id = sm.stud_id');
+		$this->db->join('sentiment_case','sentiment_case.case_id = sm.case_id');
+		$this->db->where('user.user_pos',$pos);
+
+		if($name != 'name'){
+			$this->db->like("user.user_fname", $name);
+			$this->db->or_like("user.user_lname", $name);
+			$this->db->or_like("user.user_mname", $name);
 		}
-		if($mod != 'all'){
-			$this->db->where("sched_mod", $mod);
-		}
-		if($status != 'all'){
-				
-			$this->db->where("sched_status", $status);
+		if($case != 'case'){
+			$this->db->where("meet_case", $case);
 		}else{
-			$this->db->where("sched_status", 'active');
+			$this->db->where("meet_case", 'waiting');
+
+		}
+		if($status != 'status'){
+				
+			$this->db->where("meet_status", $status);
+		}else{
+			$this->db->where("meet_status", 'published');
 		}
 	}
-	public function set($user,$senti,$type){
+	public function set($user,$senti){
 		$header = [];
 		$body = [];
 		$footer = [];
 
 
 
-		$this->form_validation->set_rules('sched_date', 'schedule date', 'required');
-		$this->form_validation->set_rules('user_id', 'student', 'required|trim');
-		$this->form_validation->set_rules('senti_id', 'sentiment', 'required|trim');
+
+		$this->form_validation->set_rules('meet_date', 'schedule date', 'required|trim');
+		$this->form_validation->set_rules('stud_id', 'student', 'required|trim');
+		$this->form_validation->set_rules('case_id', 'sentiment', 'required|trim');
+		$this->form_validation->set_rules('adv_id', 'sentiment', 'required|trim');
 		
 
 		if($this->input->post("set_date")){
@@ -117,18 +126,22 @@ class Schedule extends CI_Controller {
         	else{
         		$data = $this->input->post();
 				unset($data['set_date']);
-				$table = "senti_sched";
-				$data['sched_created'] = $this->getDatetimeNow();
-        		$data['sched_mod'] = $type;
-				$this->model_base->insert_data($data, $table);
-				$data_update = array('senti_status' => 'meeting' );
-				$col = 'senti_id';
-				$tbname = 'sentiment';
-				$this->model_base->update_data($data['senti_id'],$col,$data_update,$tbname);
+				$table = "sentimend_meeting";
+				$data['meet_created'] = $this->getDatetimeNow();
+				$this->model_base->insert_data($data, $table); // create meeting data
+
+				// update case condition to meeting 
+				$update_data = array('case_con' => 'meeting' );
+				$id = $data['case_id'];
+				$col = 'case_id';
+				$tbname = 'sentiment_case';
+				$this->model_base->update_data($id,$col,$update_data,$tbname);
+
+
 				$this->session->set_flashdata('msg_success', 'Date set!');
 				$this->db->flush_cache();
  				
-				redirect('admin/schedule/index/all/all' ,'refresh');
+				redirect('admin/schedule/index/name/meeting/case' ,'refresh');
           		
        		 }
 
@@ -138,14 +151,24 @@ class Schedule extends CI_Controller {
 		$body['user'] = $this->model_base->get_one($user,$col,$table_name);
 		$this->db->flush_cache();
 
-		$col = "senti_id";
-		$table_name = 'sentiment';
+		$col = "case_id";
+		$table_name = 'sentiment_case';
 		$body['senti'] = $this->model_base->get_one($senti,$col,$table_name);
 		$this->db->flush_cache();
 
 
 		$this->load->view("template/site_admin_header",$header);
 		$this->load->view('admin/schedule/create',$body);
+		$this->load->view("template/site_admin_footer",$footer);
+
+	}
+	public function ongoing($id){
+		$header = [];
+		$body = [];
+		$footer = [];
+
+		$this->load->view("template/site_admin_header",$header);
+		$this->load->view('admin/schedule/ongoing',$body);
 		$this->load->view("template/site_admin_footer",$footer);
 
 	}
