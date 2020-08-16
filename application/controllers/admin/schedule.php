@@ -167,6 +167,108 @@ class Schedule extends CI_Controller {
 		$body = [];
 		$footer = [];
 
+		$col = "meet_id";
+		$table_name = 'sentimend_meeting';
+		$body['meeting'] = $this->model_base->get_one($id,$col,$table_name);
+		$this->db->flush_cache();
+
+
+		$col = "user_id";
+		$table_name = 'user';
+		$student = $body['meeting'][0]['stud_id'];
+		$body['student'] = $this->model_base->get_one($student,$col,$table_name);
+		$this->db->flush_cache();
+
+		$col = "case_id";
+		$table_name = 'sentiment_case';
+		$case = $body['meeting'][0]['case_id'];
+		$body['case'] = $this->model_base->get_one($case,$col,$table_name);
+		$this->db->flush_cache();
+
+
+		$this->form_validation->set_rules('stud_id', 'Student ID', 'required');
+		$this->form_validation->set_rules('case_id', 'Case ID', 'required|trim');
+		$this->form_validation->set_rules('meet_id', 'Meeting ID', 'required|trim');
+		$this->form_validation->set_rules('meet_note', 'Note', 'required|trim');
+		$this->form_validation->set_rules('case_con', 'Case', 'required|trim');
+		if($this->input->post("case_review")){
+			if($this->form_validation->run() == FALSE){
+			 	$body['msg_error'] = validation_errors();
+			}else{
+
+				$data = $this->input->post();
+				unset($data['case_review']);
+
+					$case_data = array( 
+					'case_con' => $data['case_con'],
+					'case_updated' => $this->getDatetimeNow()
+					 );
+					$case_col = 'case_id';
+					$case_tbname = 'sentiment_case';
+					//  /. case var
+				
+					$meet_data = array( 
+						'meet_case' => 'done',
+						'meet_note'=> $data['meet_note'],
+						'meet_updated' => $this->getDatetimeNow()
+						 );
+					$meet_col = 'meet_id';
+					$meet_tbname = 'sentimend_meeting';
+					//  /. meet var
+
+				if($data['case_con'] != 'plan'){
+					$this->model_base->update_data($data['case_id'],$case_col,$case_data,$case_tbname);
+					$this->db->flush_cache();	
+					// /. update case
+					
+					$this->model_base->update_data($data['meet_id'],$meet_col,$meet_data,$meet_tbname);
+					$this->db->flush_cache();	
+					// /. update meeting
+					$this->session->set_flashdata('msg_success', ''.ucfirst($data['case_con']).'!');
+
+					redirect('admin/dashboard/index/name/study/con/'. $data['case_con'] ,'refresh');	
+				}else{
+					$meet_data['meet_mark'] = 'plan';
+					$this->model_base->update_data($data['case_id'],$case_col,$case_data,$case_tbname);
+					$this->db->flush_cache();	
+					// /. update case
+					
+					$this->model_base->update_data($data['meet_id'],$meet_col,$meet_data,$meet_tbname);
+					$this->db->flush_cache();	
+					// /. update meeting
+
+					$plan_data = array();
+					$plan_data['plan_created'] = $this->getDatetimeNow();
+					$plan_data['case_id'] = $data['case_id'];
+					$plan_data['stud_id'] = $data['stud_id'];
+					$plan_data['adv_id']  = $this->session->userdata('user_id');
+					$plan_data['meet_id'] = $data['meet_id'];
+					$last_id = $this->model_base->insert_data($plan_data,'sentiment_plan');
+
+					$follow_up = array();
+					$follow_up['meet_mark'] =  'follow';
+					$follow_up['plan_id'] = $last_id;
+					$follow_up['case_id'] =  $data['case_id'];
+					$follow_up['stud_id'] =  $data['stud_id'];
+					$follow_up['adv_id']  = $this->session->userdata('user_id');
+					$this->model_base->insert_data($follow_up,'sentimend_meeting');
+
+					$this->session->set_flashdata('msg_success', ''.ucfirst($data['case_con']).'!');
+					redirect('admin/dashboard/index/name/study/con/'. $data['case_con'] ,'refresh');	
+
+				}
+
+					
+
+
+
+
+			// $this->session->set_flashdata('msg_success', 'Analyze case submit!');
+
+			}
+		}
+
+
 		$this->load->view("template/site_admin_header",$header);
 		$this->load->view('admin/schedule/ongoing',$body);
 		$this->load->view("template/site_admin_footer",$footer);

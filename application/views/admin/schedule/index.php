@@ -74,6 +74,7 @@
                       <th>Name</th>
                       <th>Meeting date</th>
                       <th>Sentiment text</th>
+                      <th>Mark</th>
                       <th>Action</th>
                       <th></th>
                       <th></th>
@@ -100,6 +101,17 @@
 
 
                         <td><p><?php echo $schedule['case_text']; ?></p></td>
+                        <td>
+                          <?php  if($schedule['meet_mark'] == 'plan'): ?>
+                            <span class="text-warning">Under Intervention Plan</span>
+                             <?php elseif($schedule['meet_mark'] == 'follow'): ?>
+                            <span class="text-success">Follow up check-up</span>
+                             <?php else: ?>
+                          <?php endif; ?>
+                          
+
+                        </td>
+
                           <?php if( $schedule['meet_case'] == 'waiting'): ?>
                           <td><a  href="<?php echo base_url() ?>admin/schedule/ongoing/<?php echo $schedule['meet_id']  ?>" class="btn btn-block btn-outline-info">Proceed to meeting</a></td>
                           <td><a  href="" class="btn btn-block btn-outline-warning">Reschedule</a></td>
@@ -110,6 +122,7 @@
                          <!--  <td><a  href="<?php echo base_url() ?>admin/schedule/ongoing/<?php echo $schedule['meet_id']  ?>" class="btn btn-block btn-outline-info">Proceed to meeting</a></td>
                           <td><a  href="" class="btn btn-block btn-outline-warning">Reschedule</a></td>
                           <td><a  href="" class="btn btn-block btn-outline-danger">Delete</a></td> -->
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -129,6 +142,8 @@
                       <td></td>
                       <td></td>
                       <td></td>
+                      <td></td>
+
                     </tr>
 
                    <?php endif; ?>
