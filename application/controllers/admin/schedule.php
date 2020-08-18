@@ -20,10 +20,10 @@ class Schedule extends CI_Controller {
 		$footer = [];
 
 		$pos =  $this->session->userdata('user_pos');
+		$body["user_pos"] = $pos;
 		$body["user_name"] = $this->uri->segment("4");
 		$body["meet_case"] = $this->uri->segment("5");
 		$body["meet_status"] = $this->uri->segment("6");
-		$body["user_pos"] = $pos;
 
 		$config = array();
 		$config["base_url"] = base_url() .'admin/schedule/set/'.$body["user_name"].'/'.$body["meet_case"].'/'.$body["meet_status"].'/'.$body["user_pos"].'/';

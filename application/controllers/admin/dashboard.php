@@ -134,10 +134,8 @@ class Dashboard extends CI_Controller {
 		$this->db->where('case_status','published');
 
     	if($name != 'name'){
-    		$this->db->like('user.user_fname',$name,'both');
-    		$this->db->or_like('user.user_lname',$name,'both');
-    		$this->db->or_like('user.user_mname',$name,'both');
-
+			$namesearch = array('user.user_fname' => $name, 'user.user_lname' => $name, 'user.user_mname' => $name);
+			$this->db->or_having($namesearch);
     	}
 
     	if($cases != 'study'){

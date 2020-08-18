@@ -211,13 +211,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="<?php echo base_url() ?>admin/account/view/all" class="nav-link">
+                <a href="<?php echo base_url() ?>admin/sentiment/index/name/closed/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Close case</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo base_url() ?>admin/account/create" class="nav-link">
+                <a href="<?php echo base_url() ?>admin/sentiment/index/name/recommended/" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Recommened to SDO </p>
                 </a>
