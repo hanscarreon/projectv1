@@ -3,7 +3,7 @@
           <div class="col-12 col-md-4 col-sm-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Choose Case:</h3>
+                <h3 class="card-title">Sort By:</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -20,14 +20,14 @@
                   <li class="item">
                     <div class="product-info">
                       <!-- <i class="far fa-clock text-info"></i> -->
-                      <a href="<?php echo base_url() ?>admin/sentiment/index/name/closed/" class="product-title text-success">Closed Case</a>
+                      <a href="<?php echo base_url() ?>admin/sentiment/case/name/closed/" class="product-title text-success">Closed Case</a>
                         <!-- <span class="badge badge-success float-right"><?php echo number_format($positive); ?></span></a> -->
                     </div>
                   </li>
                   <li class="item">
                     <div class="product-info">
                       <!-- <i class="fas fa-user-clock text-warning"></i> -->
-                      <a href="<?php echo base_url() ?>admin/sentiment/index/name/recommended/" class="product-title text-warning">Recommended to SDO/Psychiatrist</a>
+                      <a href="<?php echo base_url() ?>admin/sentiment/case/name/recommended/" class="product-title text-warning">Recommended to SDO/Psychiatrist</a>
                     </div>
                   </li>
                   <!-- /.item -->
@@ -107,8 +107,8 @@
                           <p><?php echo $sentiment["case_text"]; ?></p>
                         </td>
 
-                        <td><a  href="<?php echo base_url()?>admin/case/view/<?php echo $sentiment['case_id']?>" class="btn btn-block btn-outline-info">View Info</a></td>
-                        <td></td>
+                        <td><a  href="<?php echo base_url()?>admin/schedule/set/<?php echo $sentiment['user_id'].'/'.$sentiment['case_id'] ?>/normal" class="btn btn-block btn-outline-info">Set Schedule</a></td>
+                        <td><a href="<?php echo base_url()?>admin/dashboard/delete_case/<?php echo $sentiment['case_id'] ?>"  class="btn btn-block btn-outline-danger">Delete</a></td>
                       </tr>
                       <?php endforeach; ?>
                     

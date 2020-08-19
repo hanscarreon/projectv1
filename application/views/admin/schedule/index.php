@@ -114,7 +114,7 @@
 
                           <?php if( $schedule['meet_case'] == 'waiting'): ?>
                           <td><a  href="<?php echo base_url() ?>admin/schedule/ongoing/<?php echo $schedule['meet_id']  ?>" class="btn btn-block btn-outline-info">Proceed to meeting</a></td>
-                          <td><a  href="" class="btn btn-block btn-outline-warning">Reschedule</a></td>
+                          <td><a  href="<?php echo base_url() ?>admin/schedule/resched/<?php echo $schedule['meet_id']  ?>" class="btn btn-block btn-outline-warning">Reschedule</a></td>
                           <td><a  href="" class="btn btn-block btn-outline-danger">Delete</a></td>
                           <?php endif; ?>
                           <!-- /. waiting -->

@@ -294,48 +294,61 @@ class Schedule extends CI_Controller {
 		$this->db->flush_cache();	
 		redirect('admin/schedule/index/all/done' ,'refresh');	
 	}
-	public function resched($user,$senti,$sched_id){
+	public function resched($id){
 		$header = [];
 		$body = [];
 		$footer = [];
 
-		$col = "user_id";
-		$table_name = 'user';
-		$body['user'] = $this->model_base->get_one($user,$col,$table_name);
+
+
+		$col = "meet_id";
+		$table_name = 'sentimend_meeting as sm';
+		$this->db->join('user','user.user_id = sm.stud_id');
+		$this->db->join('sentiment_case','sentiment_case.case_id = sm.case_id');
+		$body['data'] = $this->model_base->get_one($id,$col,$table_name);
 		$this->db->flush_cache();
 
-		$col = "senti_id";
-		$table_name = 'sentiment';
-		$body['senti'] = $this->model_base->get_one($senti,$col,$table_name);
-		$this->db->flush_cache();
+		// $col = "senti_id";
+		// $table_name = 'sentiment';
+		// $body['senti'] = $this->model_base->get_one($senti,$col,$table_name);
+		// $this->db->flush_cache();
 
-		$this->form_validation->set_rules('sched_date', 'schedule date', 'required');
-		$this->form_validation->set_rules('sched_id', 'Reschedule', 'required|trim');
+		$this->form_validation->set_rules('meet_date', 'schedule date', 'required');
 		
 
-		if($this->input->post("set_date")){
+		if($this->input->post("resched_date")){
 			 if ($this->form_validation->run() == FALSE){
 			 	$body['msg_error'] = validation_errors();
         	}
         	else{
         		$data = $this->input->post();
-				unset($data['set_date']);
-				$table = "senti_sched";
-				$data['sched_update'] = $this->getDatetimeNow();
-				$data['sched_status'] = 'resched';
-				$col = 'sched_id';
-				$this->model_base->update_data($sched_id,$col,$data,$table);
+				unset($data['resched_date']);
+
+				$data['meet_created'] = $this->getDatetimeNow();
+				$data["meet_mark"] = $body['data'][0]["meet_mark"];
+				$data["stud_id"] = $body['data'][0]["stud_id"];
+				$data["adv_id"] = $body['data'][0]["adv_id"];
+				$data["case_id"] = $body['data'][0]["case_id"];
+				$data["plan_id"] = $body['data'][0]["plan_id"];
+				$this->model_base->insert_data($data,'sentimend_meeting');
+
+				$resched = array();
+				$table = "sentimend_meeting";
+				$resched['meet_updated'] = $this->getDatetimeNow();
+				$resched['meet_case'] = 'resched';
+				$col = 'meet_id';
+				$this->model_base->update_data($id,$col,$resched,$table);
 				$this->session->set_flashdata('msg_success', 'Reschedule date set!');
 				$this->db->flush_cache();
  				
-				redirect('admin//schedule/index/all/resched' ,'refresh');
+				redirect('admin/schedule/index/name/case/status' ,'refresh');
           		
        		 }
 
 		}
 
 		$this->load->view("template/site_admin_header",$header);
-		$this->load->view('admin/schedule/edit',$body);
+		$this->load->view('admin/schedule/resched',$body);
 		$this->load->view("template/site_admin_footer",$footer);
 
 	}
