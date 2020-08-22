@@ -15,19 +15,21 @@ class Intervention extends CI_Controller {
 		}
 
 	}
-	public function index($slug='all',$case='all',$status='all',$filter="1"){
+	public function index($name='name',$case='case',$pos="pos",$filter="1"){
 		$header = [];
 		$body = [];
 		$footer = [];
 
+		
 		$body["user_name"] = $this->uri->segment("4");
-		$body["inter_plan_case"] = $this->uri->segment("5");
-		$body["inter_plan_status"] = $this->uri->segment("6");
+		$body["plan_case"] = $this->uri->segment("5");
+		$pos =  $this->session->userdata('user_pos');
+		$body["user_pos"] = $pos;
 
 		$config = array();
-		$config["base_url"] = base_url() .'admin/schedule/set/'.$body["user_name"].'/'.$body["inter_plan_case"].'/'.$body["inter_plan_status"].'/';
-		$this->db->where('inter_status !=', 'deleted');
-		$total_row = $this->model_base->count_data('inter_plan');
+		$config["base_url"] = base_url() .'admin/schedule/set/'.$body["user_name"].'/'.$body["plan_case"].'/'.$body["user_pos"].'/';
+		$this->_sorting($name,$case,$pos);
+		$total_row = $this->model_base->count_data('sentiment_plan as sp');
 		$config["total_rows"] = $total_row;
 		$config['per_page'] = 8;
 		$config['uri_segment'] = 7;
@@ -66,11 +68,9 @@ class Intervention extends CI_Controller {
 		$this->db->flush_cache();
 
 		
-		$this->_sorting($slug,$case,$status);
-		$body['plans'] = $this->model_base->get_all('inter_plan');
+		$this->_sorting($name,$case,$pos);
+		$body['plans'] = $this->model_base->get_all('sentiment_plan as sp');
 		$this->db->flush_cache();
-
-
 
 
 		$this->load->view("template/site_admin_header",$header);
@@ -78,24 +78,21 @@ class Intervention extends CI_Controller {
 		$this->load->view("template/site_admin_footer",$footer);
 
 	}
-	public function _sorting($slug, $case, $status){
-		$this->db->where('inter_status !=','deleted');
-		$this->db->where('inter_case!=','follow-up');
-		$this->db->join("user", "inter_plan.user_id = user.user_id");
-		$this->db->join("sentiment", "inter_plan.senti_id = sentiment.senti_id");
-		$this->db->join("senti_sched", "inter_plan.senti_id = senti_sched.senti_id");
-		if($slug != 'all'){
-			$this->db->like("user.user_fname", $slug);
-			$this->db->or_like("user.user_lname", $slug);
-			$this->db->or_like("user.user_mname", $slug);
-
+	public function _sorting($name, $case, $pos){
+		$this->db->where('sp.plan_status !=','deleted');
+		$this->db->join("user", "sp.stud_id = user.user_id");
+		$this->db->join("sentimend_meeting", "sp.meet_id = sentimend_meeting.meet_id");
+		$this->db->group_by("sp.plan_id");
+		if($name != "name"){
+			$namesearch = array('user.user_fname' => $name, 'user.user_lname' => $name, 'user.user_mname' => $name);
+			$this->db->or_having($namesearch);
 		}
-		if($case != 'all'){
-			$this->db->where('inter_case',$case);
+		if($case != 'case'){
+			$this->db->where('sp.plan_case',$case);
 		}
-		// if($status != 'all'){
-		// 	$this->db->where('inter_status',$status);
-		// }
+		if($pos != 'pos'){
+			$this->db->where('user.user_pos',$pos);
+		}
 
 
 	}
@@ -155,6 +152,54 @@ class Intervention extends CI_Controller {
 		$this->load->view('admin/intervention/create',$body);
 		$this->load->view("template/site_admin_footer",$footer);
 
+
+	}
+	public function view($id){
+		$header = [];
+		$body = [];
+		$footer = [];
+
+		$this->form_validation->set_rules('plan_id', 'ID', 'required|trim');
+
+		if($this->input->post("upload_file")){
+
+			if ($this->form_validation->run() == FALSE){
+				$body['msg_error'] = validation_errors();
+		   }else{
+			   $data = $this->input->post();
+			   unset($data["upload_file"]);
+			   // success
+			   $config['upload_path']   = './uploads/plans'; 
+			   $config['allowed_types'] = 'pdf'; 
+			   $config['encrypt_name'] = FALSE; 
+			   $config['max_size'] = "2048000"; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			   $this->load->library('upload', $config);
+			   $this->upload->initialize($config);
+
+			   $upload_data = array();
+			   $table = "sentiment_plan";
+		       $upload_data['plan_update'] = $this->getDatetimeNow();
+			   $col = 'plan_id';
+			   if ( !$this->upload->do_upload('plan_file')) {
+				$body['msg_error'] = $this->upload->display_errors();
+		 		}else { 
+					$upload = $this->upload->data();
+					$upload_data['plan_file'] = 'uploads/plans/' . $upload['file_name'];
+				}
+					$this->model_base->update_data($data['plan_id'],$col,$upload_data,$table);
+					$this->db->flush_cache();
+					$this->session->set_flashdata('msg_success', 'Upload Success!');
+
+		   }
+
+		}
+
+
+		
+
+		$this->load->view("template/site_admin_header",$header);
+		$this->load->view('admin/intervention/upload',$body);
+		$this->load->view("template/site_admin_footer",$footer);
 
 	}
 }	

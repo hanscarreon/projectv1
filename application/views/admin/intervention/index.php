@@ -83,79 +83,40 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Date created</th>
-                        <th>Case result</th>
-                        <th>Sentiment</th>
-                        <th>Note</th>
+                        <th>Date Created</th>
+                        <th>Meeting note</th>
+                        <th>Plan Module</th>
                         <th>Action</th>
-                        <th>Module</th>
                     </tr>
                   </thead>
                   <tbody>
                      <?php  if ( isset( $plans ) && count($plans) >= 1 ):?>
                       <?php foreach($plans as $plan): ?>
                       <tr>
-                        <td><?php echo $plan['inter_id']; ?></td>
+                        <td><?php echo $plan['plan_id']; ?></td>
                         <td><?php echo ucfirst($plan['user_fname']); ?> <?php echo ucfirst($plan['user_mname']); ?> <?php echo ucfirst($plan['user_lname']); ?></td>
-                        <td><?php echo date("F j, Y, g:i a",strtotime($plan['inter_created'])) ?></td>
+                        <td><?php echo date("F j, Y, g:i a",strtotime($plan['plan_created'])) ?></td>
                         <td>
-                            <?php  
-                            if ($plan["inter_case"] == 'close') 
-                              { 
-                                echo '<span class="tag text-success">'.$plan["inter_case"].'</span>';
-                             }
-                              if ($plan["inter_case"] == 'recommend') 
-                              { 
-                                echo '<span class="tag text-warning">'.$plan["inter_case"].'</span>';
-                             }
-                              if ($plan["inter_case"] == 'plan') 
-                              { 
-                                echo '<span class="tag text-danger">'.$plan["inter_case"].'</span>';
-                             }
-                          ?>
-                          </span>
-                        </td>
-                         <td>
-                          <p><?php echo $plan["senti_text"]; ?></p>
+                          <?php echo $plan['meet_note'] ?>
                         </td>
                         <td>
-                          <p><?php echo $plan["sched_note"]; ?></p>
-                          
+                          <form method="post" enctype="multipart/form-data">
+                            <div class="form-group" style="width:300px">
+                              <label for="exampleInputFile">File input</label>
+                              <div class="input-group">
+                                <div class="custom-file">
+                                  <input type="file" class="custom-file-input" id="plan_file" name="plan_file">
+                                  <input type="number" class="custom-file-input" id="plan_id" name="plan_id" value="<?php echo $plan['plan_id'] ?>">
+                                  <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                </div>
+                                <div class="input-group-append">
+                                  <button type="submit" name="upload_file" value="upload_file" class="input-group-text" id="">Upload</button>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
                         </td>
-                        <?php 
-                          if ($plan["inter_case"] == 'close' || $plan["inter_case"] == 'recommend' ) 
-                             { 
-                                echo '<td></td><td></td>';
-                             }
-                           if ($plan["inter_case"] == 'plan' ) 
-                            { 
-                              echo '<td><a href="'.base_url().'admin/schedule/follow/'. $plan['user_id'].'/'.$plan['senti_id'].'/'.$plan['inter_id'].'"class="btn btn-block btn-outline-info">Set follow-up</a></td>';
-                              if(empty($plan['inter_file'])){
-                                echo '<td>
-                                        <div class="input-group col-sm-10" style="width:320px">
-                                            <div class="custom-file ">
-                                              <input type="file" class="custom-file-input" id="exampleInputFile">
-                                              <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                            </div>
-                                            <div class="input-group-append">
-                                              <span class="input-group-text" id="">Upload</span>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </td>';
-                              }else{
-                                echo '<td>'.$plan['inter_file'].'</td>';
-                              }
-
-                            }
-                            if ($plan["sched_mod"] == 'follow-up' ) 
-                            { 
-                              echo '<td>Follow-up check up set</td>';
-                              echo '<td></td>';
-                            }
-                        ?>
-
-
+                        <td></td>
                       <!--   <td><a  href="<?php echo base_url()?>admin/schedule/set/<?php echo $plan['user_id'].'/'.$plan['senti_id'] ?>" class="btn btn-block btn-outline-info">Set Schedule</a></td> -->
                         <!-- <td><a  class="btn btn-block btn-outline-danger">Delete</a></td> -->
                       </tr>

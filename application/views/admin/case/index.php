@@ -107,7 +107,7 @@
                           <p><?php echo $sentiment["case_text"]; ?></p>
                         </td>
 
-                        <td><a  href="<?php echo base_url()?>admin/case/view/<?php echo $sentiment['case_id']?>" class="btn btn-block btn-outline-info">View Info</a></td>
+                        <td><a  href="<?php echo base_url()?>admin/cases/view/<?php echo $sentiment['case_id']?>" class="btn btn-block btn-outline-info">View Info</a></td>
                         <td></td>
                       </tr>
                       <?php endforeach; ?>
