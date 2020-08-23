@@ -172,33 +172,47 @@ class Intervention extends CI_Controller {
 			   $config['upload_path']   = './uploads/plans'; 
 			   $config['allowed_types'] = 'pdf'; 
 			   $config['encrypt_name'] = FALSE; 
-			   $config['max_size'] = "2048000"; // Can be set to particular file size , here it is 2 MB(2048 Kb)
+			   $config['max_size'] = "10000000"; // Can be set to particular file size , here it is 2 MB(2048 Kb)
 			   $this->load->library('upload', $config);
 			   $this->upload->initialize($config);
 
 			   $upload_data = array();
 			   $table = "sentiment_plan";
-		       $upload_data['plan_update'] = $this->getDatetimeNow();
+			   $upload_data['plan_update'] = $this->getDatetimeNow();
 			   $col = 'plan_id';
 			   if ( !$this->upload->do_upload('plan_file')) {
 				$body['msg_error'] = $this->upload->display_errors();
 		 		}else { 
 					$upload = $this->upload->data();
 					$upload_data['plan_file'] = 'uploads/plans/' . $upload['file_name'];
-				}
 					$this->model_base->update_data($data['plan_id'],$col,$upload_data,$table);
 					$this->db->flush_cache();
 					$this->session->set_flashdata('msg_success', 'Upload Success!');
+					redirect('/admin/intervention/index/name/ongoing' ,'refresh');
+				}
+					
 
 		   }
 
 		}
 
 
-		
+		$col = "plan_id";
+		$table_name = 'sentiment_plan as sp';
+		$this->db->join('user', 'sp.stud_id = user.user_id');
+		$this->db->join('sentimend_meeting', 'sp.meet_id = sentimend_meeting.meet_id');
+		$this->db->join('sentiment_case', 'sp.case_id = sentiment_case.case_id');
+		$body['plan'] = $this->model_base->get_one($id,$col,$table_name);
+		$this->db->flush_cache();
+
+		// $col = "user_id";
+		// $table_name = 'user as us';
+		// $this->db->join('sentimend_meeting', 'us.user_id = sentimend_meeting.stud_id');
+		// $body['plan'] = $this->model_base->get_one($body['plan'][0]['user_id'],$col,$table_name);
+		// $this->db->flush_cache();
 
 		$this->load->view("template/site_admin_header",$header);
-		$this->load->view('admin/intervention/upload',$body);
+		$this->load->view('admin/intervention/view',$body);
 		$this->load->view("template/site_admin_footer",$footer);
 
 	}

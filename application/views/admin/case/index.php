@@ -31,13 +31,12 @@
                     </div>
                   </li>
                   <!-- /.item -->
-                  <!-- <li class="item">
+                  <li class="item">
                     <div class="product-info">
-                      <i class="far fa-check-circle text-success"></i>
-                      <a href="<?php echo base_url() ?>admin/schedule/index/name/done/status" class="product-title text-success"> Done
+                      <a href="<?php echo base_url() ?>/admin/intervention/index/name/ongoing" class="product-title text-danger"> Intervention Plan
                       </a>
                     </div>
-                  </li> -->
+                  </li>
                   <!-- /.item -->
                 </ul>
               </div>

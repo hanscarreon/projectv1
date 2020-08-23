@@ -1,64 +1,51 @@
 <div class="row">
- <div class="col-12 col-sm-12 col-md-4">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Sort By:</h3>
+<div class="col-12 col-md-4 col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Choose Case:</h3>
 
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button> -->
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <!-- <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button> -->
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0">
+                <ul class="products-list product-list-in-card pl-2 pr-2">
+                  <li class="item">
+                    <div class="product-info">
+                      <!-- <i class="far fa-clock text-info"></i> -->
+                      <a href="<?php echo base_url() ?>admin/sentiment/index/name/closed/" class="product-title text-success">Closed Case</a>
+                        <!-- <span class="badge badge-success float-right"><?php echo number_format($positive); ?></span></a> -->
+                    </div>
+                  </li>
+                  <li class="item">
+                    <div class="product-info">
+                      <!-- <i class="fas fa-user-clock text-warning"></i> -->
+                      <a href="<?php echo base_url() ?>admin/sentiment/index/name/recommended/" class="product-title text-warning">Recommended to SDO/Psychiatrist</a>
+                    </div>
+                  </li>
+                  <!-- /.item -->
+                  <li class="item">
+                    <div class="product-info">
+                      <a href="<?php echo base_url() ?>/admin/intervention/index/name/ongoing" class="product-title text-danger"> Intervention Plan
+                      </a>
+                    </div>
+                  </li>
+                  <!-- /.item -->
+                </ul>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer text-center">
+                <!-- <a href="<?php echo base_url() ?>admin/schedule/index/name/case/status" class="uppercase">View All</a> -->
+              </div>
+              <!-- /.card-footer -->
             </div>
           </div>
-          <!-- /.card-header -->
-          <div class="card-body p-0">
-            <ul class="products-list product-list-in-card pl-2 pr-2">
-              <li class="item">
-                <div class="product-info">
-                  <i class="far fa-laugh text-success"></i>
-                  <a href="<?php echo base_url() ?>admin/intervention/index/all/close/status" class="product-title text-success"> Close Case
-                    <!-- <span class="badge badge-success float-right"><?php echo number_format($positive); ?></span></a> -->
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-info">
-                  <i class="far fa-meh text-warning"></i>
-                  <a href="<?php echo base_url() ?>admin/intervention/index/all/recommend/status" class="product-title text-warning"> Recommended to SDO or Pyschologist
-                    <!-- <span class="badge badge-warning float-right"><?php echo number_format($neutral); ?></span></a> -->
-                </div>
-              </li>
-              <!-- /.item -->
-              <li class="item">
-                <div class="product-info">
-                  <i class="far fa-angry text-danger"></i>
-                  <a href="<?php echo base_url() ?>admin/intervention/index/all/plan/status" class="product-title text-danger"> Intervention planning
-                    <!-- <span class="badge badge-danger float-right"><?php echo number_format($negative); ?></span> -->
-                  </a>
-                </div>
-              </li>
-              <li class="item">
-                <div class="product-info">
-                  <i class="far fa-angry text-info"></i>
-                  <a href="<?php echo base_url() ?>admin/intervention/index/all/all/status" class="product-title text-info"> Total Analysis
-                    <!-- <span class="badge badge-danger float-right"><?php echo number_format($total); ?></span> -->
-                  </a>
-                </div>
-              </li>
-              <!-- /.item -->
-            </ul>
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer text-center">
-            <a href="<?php echo base_url() ?>admin/intervention/index/all/all/all" class="uppercase">View All</a>
-          </div>
-          <!-- /.card-footer -->
-        </div>
-    
-  </div>
 
 <!-- <?php echo print_r($plans); ?> -->
        <div class="col-md-8 col-sm-12 col-12">
@@ -100,26 +87,14 @@
                           <?php echo $plan['meet_note'] ?>
                         </td>
                         <td>
-                          <form method="post" enctype="multipart/form-data">
-                            <div class="form-group" style="width:300px">
-                              <label for="exampleInputFile">File input</label>
-                              <div class="input-group">
-                                <div class="custom-file">
-                                  <input type="file" class="custom-file-input" id="plan_file" name="plan_file">
-                                  <input type="number" class="custom-file-input" id="plan_id" name="plan_id" value="<?php echo $plan['plan_id'] ?>">
-                                  <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                </div>
-                                <div class="input-group-append">
-                                  <button type="submit" name="upload_file" value="upload_file" class="input-group-text" id="">Upload</button>
-                                </div>
-                              </div>
-                            </div>
-                          </form>
+                          <?php if(empty($plan['plan_file']) || $plan['plan_file']== null): ?>
+                           No file available
+                          <?php else: ?>
+                          <a href="<?php echo base_url().$plan['plan_file'] ?>" download="" > Download Module </a>
+                          <?php endif; ?>
                         </td>
-                        <td></td>
-                      <!--   <td><a  href="<?php echo base_url()?>admin/schedule/set/<?php echo $plan['user_id'].'/'.$plan['senti_id'] ?>" class="btn btn-block btn-outline-info">Set Schedule</a></td> -->
-                        <!-- <td><a  class="btn btn-block btn-outline-danger">Delete</a></td> -->
-                      </tr>
+                        <td><a  href="<?php echo base_url()?>admin/intervention/view/<?php echo $plan['plan_id']?>" class="btn btn-block btn-outline-primary">Upload/View Info</a></td>
+                      </tr> 
                       <?php endforeach; ?>
                     
                    <?php else: ?>
