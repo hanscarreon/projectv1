@@ -60,6 +60,70 @@
       </div>
     </div>
     <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-white">
+        <div class="inner">
+          <h3><?php echo number_format($negative); ?></h3>
+
+          <p>User</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-dark">
+        <div class="inner">
+          <h3><?php echo number_format($negative); ?></h3>
+
+          <p>Admins / Teachers</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-lock"></i>
+        </div>
+        <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-primary">
+        <div class="inner">
+        
+          <h3><?php echo number_format($negative); ?></h3>
+
+          <p>Meetings</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-calendar-day"></i>
+        </div>
+        <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-secondary">
+        <div class="inner">
+          <h3><?php echo number_format($negative); ?></h3>
+
+          <p>Intervention Plan</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-file-medical"></i>
+        </div>
+        <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    
+
+    
   </div>
 <div class="row">
  <div class="col-12 col-sm-12 col-md-4">
@@ -178,7 +242,7 @@
                           </span>
                         </td>
                          <td>
-                          <p><?php echo $sentiment["case_text"]; ?></p>
+                          <p style="overflow: hidden;text-overflow: ellipsis; white-space: nowrap; width:150px; "><?php echo $sentiment["case_text"]; ?></p>
                         </td>
 
                         <td><a  href="<?php echo base_url()?>admin/schedule/set/<?php echo $sentiment['user_id'].'/'.$sentiment['case_id'] ?>/normal" class="btn btn-block btn-outline-info">Set Schedule</a></td>
