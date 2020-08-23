@@ -1,3 +1,66 @@
+
+<div class="row">
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-info">
+        <div class="inner">
+          <h3><?php echo number_format($total); ?></h3>
+
+          <p>Total</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-clipboard"></i>
+        </div>
+        <a href="<?php echo base_url() ?>admin/dashboard/index/name/study/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3><?php echo number_format($positive); ?><sup style="font-size: 20px"></sup></h3>
+
+          <p>Positive</p>
+        </div>
+        <div class="icon">
+          <i class="far fa-laugh"></i>
+        </div>
+        <a href="<?php echo base_url() ?>admin/dashboard/index/name/positive/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-warning">
+        <div class="inner">
+          <h3><?php echo number_format($neutral); ?></h3>
+
+          <p>Neutral</p>
+        </div>
+        <div class="icon">
+          <i class="far fa-meh "></i>
+        </div>
+        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-danger">
+        <div class="inner">
+          <h3><?php echo number_format($negative); ?></h3>
+
+          <p>Negative</p>
+        </div>
+        <div class="icon">
+          <i class="far fa-angry"></i>
+        </div>
+        <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- ./col -->
+  </div>
 <div class="row">
  <div class="col-12 col-sm-12 col-md-4">
         <div class="card">
@@ -19,7 +82,7 @@
                 <div class="product-info">
                   <i class="far fa-laugh text-success"></i>
                   <a href="<?php echo base_url() ?>admin/dashboard/index/name/positive/con" class="product-title text-success"> Positive
-                    <span class="badge badge-success float-right"><?php echo number_format($positive); ?></span></a>
+                    <!-- <span class="badge badge-success float-right"><?php echo number_format($positive); ?></span></a> -->
                 </div>
               </li>
               <!-- /.item -->
@@ -27,7 +90,7 @@
                 <div class="product-info">
                   <i class="far fa-meh text-warning"></i>
                   <a href="<?php echo base_url() ?>admin/dashboard/index/name/neutral/con" class="product-title text-warning"> Neutral
-                    <span class="badge badge-warning float-right"><?php echo number_format($neutral); ?></span></a>
+                    <!-- <span class="badge badge-warning float-right"><?php echo number_format($neutral); ?></span></a> -->
                 </div>
               </li>
               <!-- /.item -->
@@ -35,7 +98,7 @@
                 <div class="product-info">
                   <i class="far fa-angry text-danger"></i>
                   <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="product-title text-danger"> Negative
-                    <span class="badge badge-danger float-right"><?php echo number_format($negative); ?></span>
+                    <!-- <span class="badge badge-danger float-right"><?php echo number_format($negative); ?></span> -->
                   </a>
                 </div>
               </li>
@@ -43,7 +106,7 @@
                 <div class="product-info">
                   <i class="far fa-angry text-info"></i>
                   <a href="<?php echo base_url() ?>admin/dashboard/index/name/study/con" class="product-title text-info"> Total Analysis
-                    <span class="badge badge-info float-right"><?php echo number_format($total); ?></span>
+                    <!-- <span class="badge badge-info float-right"><?php echo number_format($total); ?></span> -->
                   </a>
                 </div>
               </li>
@@ -62,7 +125,7 @@
           <div class="col-md-8 col-sm-12 col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Responsive Hover Table</h3>
+                <h3 class="card-title">Pending Analysis</h3>
 
                 <div class="card-tools">
                   <form method="POST">
