@@ -15,11 +15,11 @@ class Account extends CI_Controller {
 		}
 
 	}
-	public function index($filter){
+	public function index(){
 		$header = [];
 		$body = [];
 		$footer = [];
-		$body["filter"] = $filter;
+		// $body["filter"] = $filter;
 		$this->load->view("template/site_admin_header",$header);
 		$this->load->view('admin/account/index',$body);
 		$this->load->view("template/site_admin_footer",$footer);
@@ -72,7 +72,6 @@ class Account extends CI_Controller {
 		$header = [];
 		$body = [];
 		$footer = [];
-		$body["filter"] = "test";
 		
 		$this->load->view("template/site_admin_header",$header);
 		$this->load->view('admin/account/view',$body);

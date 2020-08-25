@@ -1,6 +1,6 @@
 
 <div class="row">
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-4 col-4">
       <!-- small box -->
       <?php if($this->uri->segment("5") == 'positive'): ?>
         <?php 
@@ -41,15 +41,16 @@
           <h3><?php echo number_format($case_num); ?></h3>
 
           <p><?php echo $case_text ?> 
-          <button type="button" class="btn <?php echo $class_value ?> dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
-          <!-- <span class="sr-only">Toggle Dropdown</span> -->
-          <div class="dropdown-menu" role="menu" style="">
-            <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/positive/con">Positive</a>
-            <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/neutral/con">Neutral</a>
-            <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con">Negative</a>
-            <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/study/con">All</a>
-          </div>
-        </button></p>
+            <button type="button" class="btn <?php echo $class_value ?> dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+            <!-- <span class="sr-only">Toggle Dropdown</span> -->
+            <div class="dropdown-menu" role="menu" style="">
+              <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/positive/con">Positive</a>
+              <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/neutral/con">Neutral</a>
+              <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con">Negative</a>
+              <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/study/con">All</a>
+            </div>
+            </button>
+          </p>
         </div>
         <div class="icon">
           <i class="<?php echo $case_emoji ?>"></i>
@@ -58,23 +59,29 @@
     </div>
     <!-- ./col -->
 
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-4 col-4">
       <!-- small box -->
       <div class="small-box bg-white">
         <div class="inner">
-          <h3><?php echo number_format($negative); ?></h3>
+          <h3>10</h3>
 
-          <p>User</p>
+          <p>User
+            <button type="button" class="btn bg-white dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+            <div class="dropdown-menu" role="menu" style="">
+              <a class="dropdown-item anal-dd" href="#">Admin</a>
+              <a class="dropdown-item anal-dd" href="#">Student</a>
+              <a class="dropdown-item anal-dd" href="#">All</a>
+            </div>
+            </button>
+          </p>
         </div>
         <div class="icon">
           <i class="fas fa-users"></i>
         </div>
-        <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
+    <!-- <div class="col-lg-3 col-6">
       <div class="small-box bg-dark">
         <div class="inner">
           <h3><?php echo number_format($negative); ?></h3>
@@ -84,28 +91,32 @@
         <div class="icon">
           <i class="fas fa-lock"></i>
         </div>
-        <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
-    </div>
+    </div> -->
     <!-- ./col -->
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-4 col-4">
       <!-- small box -->
       <div class="small-box bg-primary">
         <div class="inner">
         
           <h3><?php echo number_format($negative); ?></h3>
 
-          <p>Meetings</p>
+          <p>Meetings
+            <button type="button" class="btn bg-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+            <div class="dropdown-menu" role="menu" style="">
+              <a class="dropdown-item anal-dd" href="#">Meeting</a>
+              <a class="dropdown-item anal-dd" href="#">Intervention Plan</a>
+            </div>
+            </button>
+          </p>
         </div>
         <div class="icon">
           <i class="fas fa-calendar-day"></i>
         </div>
-        <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
+    <!-- <div class="col-lg-3 col-6">
       <div class="small-box bg-secondary">
         <div class="inner">
           <h3><?php echo number_format($negative); ?></h3>
@@ -117,7 +128,7 @@
         </div>
         <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
-    </div>
+    </div> -->
     <!-- ./col -->
     
 
