@@ -5,15 +5,6 @@
         <div class="card-header">
           <h3 class="card-title"><?php echo ucfirst($student[0]['user_fname']).' '.ucfirst($student[0]['user_mname']).'. '.ucfirst($student[0]['user_lname']); ?> </h3>
 
-          <div class="card-tools">
-            <span data-toggle="tooltip" title="3 New Messages" class="badge bg-primary">3</span>
-            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle">
-              <i class="fas fa-comments"></i></button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-            </button>
-          </div>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -34,6 +25,7 @@
               <!-- /.direct-chat-text -->
             </div>
             <!-- /.direct-chat-msg -->
+            
 
             <!-- Message to the right -->
             <div class="direct-chat-msg right">
@@ -53,36 +45,14 @@
           </div>
           <!--/.direct-chat-messages-->
 
-          <!-- Contacts are loaded here -->
-          <div class="direct-chat-contacts">
-            <ul class="contacts-list">
-              <li>
-                <a href="#">
-                  <img class="contacts-list-img" src="<?php echo base_url() ?>/dist/img/user1-128x128.jpg">
-
-                  <div class="contacts-list-info">
-                    <span class="contacts-list-name">
-                      Count pepe
-                      <small class="contacts-list-date float-right">2/28/2015</small>
-                    </span>
-                    <span class="contacts-list-msg">maypepe kaba?...</span>
-                  </div>
-                  <!-- /.contacts-list-info -->
-                </a>
-              </li>
-              <!-- End Contact Item -->
-            </ul>
-            <!-- /.contatcts-list -->
-          </div>
-          <!-- /.direct-chat-pane -->
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
           <form action="#" method="post">
             <div class="input-group">
-              <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+              <input type="text" autocomplete="off"  name="chat_text" id="chat_text" placeholder="Type Message ..." class="form-control">
               <span class="input-group-append">
-                <button type="submit" class="btn btn-primary">Send</button>
+                <button  id="send_chat" type="submit" class="btn btn-primary">Send</button>
               </span>
             </div>
           </form>
@@ -158,3 +128,44 @@
 <!-- /. col note -->
 
 </div>
+
+<!-- chat ajax code -->
+<script>
+var sender_id =  <?php echo $this->session->userdata('user_id'); ?>;
+var reciever_id =  <?php echo $student[0]['user_id'] ?>;
+$("#send_chat").click(function(event){
+  event.preventDefault();
+  var msg = $("#chat_text").val()
+  if(isBlank(msg) == true){
+    return;
+  }
+  $.ajax({
+    type: "POST",
+    url: '<?php echo base_url() ?>api/chat/send',
+   
+    // data: JSON.stringify(data_arr),
+    data: JSON.stringify({
+      sender_id: sender_id,
+    reciever_id: reciever_id,
+    chat_text: msg
+    }),
+    success:function(res)
+        {
+          console.log(res);
+        },
+    fail:function(err){
+      console.log(err);
+      console.log("wew");
+    }
+  });
+
+});
+
+function isBlank(str) {
+    return (!str || /^\s*$/.test(str));
+}
+
+$(document).ready(function(){
+  
+});
+</script>

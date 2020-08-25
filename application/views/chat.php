@@ -121,7 +121,7 @@
    url:"<?php echo base_url(); ?>chat/load_chat_data",
    method:"POST",
    data:{receiver_id:receiver_id, update_data:update_data},
-   dataType:"json",
+   dataType:"array",
    success:function(data)
    {
     var html = '';

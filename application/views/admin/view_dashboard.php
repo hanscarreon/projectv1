@@ -2,64 +2,62 @@
 <div class="row">
     <div class="col-lg-3 col-6">
       <!-- small box -->
-      <div class="small-box bg-info">
-        <div class="inner">
-          <h3><?php echo number_format($total); ?></h3>
+      <?php if($this->uri->segment("5") == 'positive'): ?>
+        <?php 
+          $case_num = $positive; 
+          $class_value = 'bg-success'; 
+          $case_text = "Total Positve";
+          $case_emoji = "far fa-laugh";
+          $case_link = "admin/dashboard/index/name/positive/con";
+        ?>
+      <?php elseif($this->uri->segment("5") == 'neutral'): ?>
+        <?php 
+          $case_num = $neutral; 
+          $class_value = 'bg-warning'; 
+          $case_text = "Total Neutral";
+          $case_emoji = "far fa-meh";
+          $case_link = "admin/dashboard/index/name/neutral/con";
+        ?>
+      <?php elseif($this->uri->segment("5") == 'negative'): ?>
+        <?php 
+          $case_num = $negative; 
+          $class_value = 'bg-danger'; 
+          $case_text = "Total Negative";
+          $case_emoji = "far fa-angry";
+          $case_link = "admin/dashboard/index/name/negative/con";
+        ?>
+      <?php else: ?>
+        <?php 
+          $case_num = $total; 
+          $class_value = 'bg-info'; 
+          $case_text = "Total Analysis";
+          $case_emoji = "ion ion-clipboard";
+          $case_link = "admin/dashboard/index/name/study/con";
+        ?>
+      <?php endif;?>
 
-          <p>Total</p>
+      <div class="small-box <?php echo $class_value ?>">
+        <div class="inner">
+          <h3><?php echo number_format($case_num); ?></h3>
+
+          <p><?php echo $case_text ?> 
+          <button type="button" class="btn <?php echo $class_value ?> dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+          <!-- <span class="sr-only">Toggle Dropdown</span> -->
+          <div class="dropdown-menu" role="menu" style="">
+            <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/positive/con">Positive</a>
+            <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/neutral/con">Neutral</a>
+            <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con">Negative</a>
+            <a class="dropdown-item anal-dd" href="<?php echo base_url() ?>admin/dashboard/index/name/study/con">All</a>
+          </div>
+        </button></p>
         </div>
         <div class="icon">
-          <i class="ion ion-clipboard"></i>
+          <i class="<?php echo $case_emoji ?>"></i>
         </div>
-        <a href="<?php echo base_url() ?>admin/dashboard/index/name/study/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
-      <div class="small-box bg-success">
-        <div class="inner">
-          <h3><?php echo number_format($positive); ?><sup style="font-size: 20px"></sup></h3>
 
-          <p>Positive</p>
-        </div>
-        <div class="icon">
-          <i class="far fa-laugh"></i>
-        </div>
-        <a href="<?php echo base_url() ?>admin/dashboard/index/name/positive/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
-      <div class="small-box bg-warning">
-        <div class="inner">
-          <h3><?php echo number_format($neutral); ?></h3>
-
-          <p>Neutral</p>
-        </div>
-        <div class="icon">
-          <i class="far fa-meh "></i>
-        </div>
-        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-      <!-- small box -->
-      <div class="small-box bg-danger">
-        <div class="inner">
-          <h3><?php echo number_format($negative); ?></h3>
-
-          <p>Negative</p>
-        </div>
-        <div class="icon">
-          <i class="far fa-angry"></i>
-        </div>
-        <a href="<?php echo base_url() ?>admin/dashboard/index/name/negative/con" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-      </div>
-    </div>
-    <!-- ./col -->
     <div class="col-lg-3 col-6">
       <!-- small box -->
       <div class="small-box bg-white">
@@ -273,3 +271,9 @@
           </div>
         </div>
 
+<script>
+$(".anal-dd").click(function(){
+  var myHref = $(this).attr("href");
+  window.location = myHref;
+})
+</script>
