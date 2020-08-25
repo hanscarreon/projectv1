@@ -55,10 +55,10 @@ class Account extends CI_Controller {
 				unset($data['user_pass2']);
 
 				$data['user_created'] = $this->getDatetimeNow();
-				$this->model_base->insert_data($data, 'user');
+				$last_id = $this->model_base->insert_data($data, 'user');
 				$this->session->set_flashdata('msg_success', 'Successfully created!');
 				$this->db->flush_cache();
-				redirect('admin/account/view' ,'refresh');
+				redirect('admin/account/view/'.$last_id ,'refresh');
           		
        		 }
 

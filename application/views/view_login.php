@@ -32,7 +32,7 @@
       <?php echo $user; ?>
       <form  method="post">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="user_name" id="user_name" placeholder="Username">
+          <input type="text" class="form-control" name="user_name" id="user_name" placeholder="Username/Email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>

@@ -32,6 +32,7 @@ class Login extends CI_Controller {
 
 				}else{
 					$data = $this->input->post();
+					$data["user_email"] = $data["user_name"];
 					$table = "user";
 					// $account = $this->model_login->login($data["user_name"],$data["user_pass"], "user");
 					$account = $this->model_login->login($data, $table);

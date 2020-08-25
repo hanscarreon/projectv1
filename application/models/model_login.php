@@ -15,7 +15,8 @@ class Model_login extends CI_Model {
 	public function login ($data, $table) {
 		$this->db->select('*');
 		$this->db->from($table);
-		$this->db->where('user_name', $data['user_name']); 
+		$this->db->or_having('user_name', $data['user_name']); 
+		$this->db->or_having('user_email', $data['user_email']); 
 		$this->db->where('user_pass', md5($data['user_pass'])); 
 		$this->db->where('user_role', 'admin'); 
 		$query = $this->db->get();
