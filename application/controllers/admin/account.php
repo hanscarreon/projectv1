@@ -36,14 +36,13 @@ class Account extends CI_Controller {
 		// form validation create account
 		$this->form_validation->set_rules('user_email', 'Email', 'required|trim|valid_email|is_unique[user.user_email]');
 		$this->form_validation->set_rules('user_name', 'Username', 'required|trim|min_length[5]|is_unique[user.user_name]');
-		// $this->form_validation->set_rules('user_pass', 'Password', 'trim|required|matches[user_password_conf]|min_length[5]|md5'); 
 		$this->form_validation->set_rules('user_pass', 'Password', 'trim|required|min_length[5]|md5'); 
+		$this->form_validation->set_rules('user_pass2', 'Password not Match', 'trim|required|matches[user_pass]|min_length[5]|md5'); 
 		$this->form_validation->set_rules('user_fname', 'Firstname', 'required|trim');
 		$this->form_validation->set_rules('user_lname', 'Lastname', 'required|trim');
 		$this->form_validation->set_rules('user_mname', 'Middlename', 'required|trim');
 		$this->form_validation->set_rules('user_role', 'Role', 'required|trim');
 		$this->form_validation->set_rules('user_pos', 'Curriculum', 'required|trim');
-		// $this->form_validation->set_rules('usr_contact', 'Contact Number', 'required|trim');
 
 		if($this->input->post("create_account")){
 			 if ($this->form_validation->run() == FALSE){
@@ -53,6 +52,7 @@ class Account extends CI_Controller {
         	else{
         		$data = $this->input->post();
 				unset($data['create_account']);
+				unset($data['user_pass2']);
 
 				$data['user_created'] = $this->getDatetimeNow();
 				$this->model_base->insert_data($data, 'user');

@@ -46,6 +46,12 @@
             <input type="password" class="form-control" id="user_pass" name="user_pass" placeholder="Password" value="">
           </div>
         </div>
+        <div class="form-group row">
+          <label for="user_pass2" class="col-sm-2 col-form-label">Confirm Password</label>
+          <div class="col-sm-10">
+            <input type="password" class="form-control" id="user_pass2" name="user_pass2" placeholder="Password" value="">
+          </div>
+        </div>
         <!-- <div class="form-group row">
           <label for="user_password_conf" class="col-sm-2 col-form-label">Confirm password</label>
           <div class="col-sm-10">

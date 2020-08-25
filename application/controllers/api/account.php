@@ -18,24 +18,23 @@ class Account extends REST_Controller{
 
   public function Create_post(){
      $_POST = json_decode(file_get_contents("php://input"), true);  // get post value
-    // form validation for inputs
-   // form validation create account
-
+    	// form validation for inputs
+   		// form validation create account
 		$this->form_validation->set_rules('user_email', 'Email', 'required|trim|valid_email|is_unique[user.user_email]');
 		$this->form_validation->set_rules('user_name', 'Username', 'required|trim|min_length[5]|is_unique[user.user_name]');
-		// $this->form_validation->set_rules('user_pass', 'Password', 'trim|required|matches[user_password_conf]|min_length[5]|md5'); 
+		$this->form_validation->set_rules('user_pass2', 'Password not match', 'trim|required|matches[user_pass]|min_length[5]|md5'); 
 		$this->form_validation->set_rules('user_pass', 'Password', 'trim|required|min_length[5]|md5'); 
 		$this->form_validation->set_rules('user_fname', 'Firstname', 'required|trim');
 		$this->form_validation->set_rules('user_lname', 'Lastname', 'required|trim');
 		$this->form_validation->set_rules('user_mname', 'Middlename', 'required|trim');
 		$this->form_validation->set_rules('user_pos', 'Curriculum', 'required|trim');
-		// $this->form_validation->set_rules('usr_contact', 'Contact Number', 'required|trim');
     if($this->form_validation->run() == FALSE){
     	// echo json_encode(validation_errors());
     	echo validation_errors();
     	// return JSON.stringify(validation_errors());
     }else{
-       $data = $this->input->post();
+	   $data = $this->input->post();
+	 	 unset($data['user_pass2']);
     	 $data['user_created'] = $this->getDatetimeNow();
     	 $data['user_role'] = "student";
          $table = "user";
