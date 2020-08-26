@@ -117,7 +117,6 @@ class Schedule extends CI_Controller {
 		$this->form_validation->set_rules('stud_id', 'student', 'required|trim');
 		$this->form_validation->set_rules('case_id', 'sentiment', 'required|trim');
 		$this->form_validation->set_rules('adv_id', 'sentiment', 'required|trim');
-		
 
 		if($this->input->post("set_date")){
 			 if ($this->form_validation->run() == FALSE){
@@ -141,7 +140,7 @@ class Schedule extends CI_Controller {
 				$this->session->set_flashdata('msg_success', 'Date set!');
 				$this->db->flush_cache();
  				
-				redirect('admin/schedule/index/name/meeting/case' ,'refresh');
+				redirect('admin/schedule/index/name/waiting/status' ,'refresh');
           		
        		 }
 

@@ -63,7 +63,7 @@
       <!-- small box -->
       <div class="small-box bg-white">
         <div class="inner">
-          <h3>10</h3>
+          <h3><?php echo number_format($total_user) ?></h3>
 
           <p>User
             <button type="button" class="btn bg-white dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
@@ -99,7 +99,7 @@
       <div class="small-box bg-primary">
         <div class="inner">
         
-          <h3><?php echo number_format($negative); ?></h3>
+          <h3><?php echo number_format($total_meetings); ?></h3>
 
           <p>Meetings
             <button type="button" class="btn bg-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">

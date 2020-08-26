@@ -100,16 +100,32 @@ class Dashboard extends CI_Controller {
 		$val = "positive";
 		$this->_count_sort($pos);
 		$body["positive"] = $this->model_base->count_data_status("sentiment_case",$col,$val);
+		$this->db->flush_cache();
 
 		$col = "case_study";
 		$val = "neutral";
 		$this->_count_sort($pos);
 		$body["neutral"] = $this->model_base->count_data_status("sentiment_case",$col,$val);
+		$this->db->flush_cache();
+
 
 		$col = "case_study";
 		$val = "negative";
 		$this->_count_sort($pos);
 		$body["negative"] = $this->model_base->count_data_status("sentiment_case",$col,$val);
+		$this->db->flush_cache();
+
+
+		$this->db->where("user_pos",$pos);
+		$this->db->where("user_role","student");
+		$body["total_user"] = $this->model_base->count_data("user");
+		$this->db->flush_cache();
+
+		$this->db->join("user", "sentimend_meeting.stud_id = user.user_id");
+		$this->db->where("user.user_pos",$pos);
+		$this->db->where("user.user_role","student");
+		$body["total_meetings"] = $this->model_base->count_data("sentimend_meeting");
+		$this->db->flush_cache();
 
 
 		$this->_count_sort($pos);
